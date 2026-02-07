@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Verification Checklist | GRAM-SABHA</title>
+    <meta name="description" content="Contractor work verification and validation portal">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Verification Specific Styles */
+        .verify-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--white);
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .verify-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .verify-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .verify-logo h1 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .verify-logo p {
+            font-size: 0.625rem;
+            color: var(--primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .verify-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .verify-nav a {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .verify-nav a.active {
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.25rem;
+        }
+
+        .user-info-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .user-text {
+            text-align: right;
+        }
+
+        .user-text p {
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .user-text span {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .verify-main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .progress-percent {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 1.5rem;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            position: relative;
+            transition: width 1s ease;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.15) 10px,
+                rgba(255,255,255,0.15) 20px
+            );
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+        }
+
+        .progress-meta p {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .progress-meta p:first-child {
+            color: var(--primary);
+        }
+
+        .progress-meta p:last-child {
+            color: var(--text-muted);
+        }
+
+        /* Project Info */
+        .project-info {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .project-item label {
+            display: block;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-item p {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        /* Checklist */
+        .checklist-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .checklist-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-header span {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .checklist-header h2 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            transition: var(--transition);
+        }
+
+        .check-item:hover {
+            border-color: var(--primary);
+        }
+
+        .check-item.completed {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+        }
+
+        .check-item.pending {
+            border-color: #fde68a;
+            background: #fffbeb;
+        }
+
+        .check-status {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .check-item.completed .check-status {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .check-item.pending .check-status {
+            background: #fbbf24;
+            color: var(--white);
+        }
+
+        .check-item:not(.completed):not(.pending) .check-status {
+            background: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .check-content {
+            flex: 1;
+        }
+
+        .check-content h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .check-content p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .check-action {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .check-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .check-badge.done {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .check-badge.waiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .check-badge.ready {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .check-time {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            transition: var(--transition-fast);
+        }
+
+        .upload-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Footer */
+        .verify-footer {
+            background: #0f172a;
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+        }
+
+        .footer-brand strong {
+            font-size: 0.875rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+        }
+
+        .footer-text {
+            font-size: 0.625rem;
+            color: #64748b;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            transition: var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .verify-header {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .verify-nav {
+                display: none;
+            }
+
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .check-item {
+                flex-wrap: wrap;
+            }
+
+            .check-action {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="verify-header">
+        <a href="index.html" class="verify-logo">
+            <div class="verify-logo-icon">
+                <span class="material-symbols-outlined">account_balance</span>
+            </div>
+            <div>
+                <h1>GRAM-SABHA</h1>
+                <p>Gov Digital Infrastructure</p>
+            </div>
+        </a>
+
+        <nav class="verify-nav">
+            <a href="sarpanch-portal.html">Dashboard</a>
+            <a href="#">Active Projects</a>
+            <a href="#" class="active">Verified Checklist</a>
+        </nav>
+
+        <div class="user-info-header">
+            <div class="user-text">
+                <p>R. Kumar</p>
+                <span>ID: GS-CONT-8821</span>
+            </div>
+            <div class="user-img">
+                <span class="material-symbols-outlined">person</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="verify-main">
+        <!-- Progress Card -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <div>
+                    <p class="progress-label">Current Status</p>
+                    <p class="progress-title">AI Verification Progress</p>
+                </div>
+                <span class="progress-percent">85%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 85%;"></div>
+            </div>
+            <div class="progress-meta">
+                <p>
+                    <span class="material-symbols-outlined">sync</span>
+                    ANALYZING UPLOADS...
+                </p>
+                <p>ESTIMATED TIME: 45 SEC</p>
+            </div>
+        </div>
+
+        <!-- Project Info -->
+        <div class="project-info">
+            <div class="project-grid">
+                <div class="project-item">
+                    <label>Project ID</label>
+                    <p>RD-2024-0892</p>
+                </div>
+                <div class="project-item">
+                    <label>Work Type</label>
+                    <p>Road Construction</p>
+                </div>
+                <div class="project-item">
+                    <label>Sanctioned Amount</label>
+                    <p>₹4,50,000</p>
+                </div>
+                <div class="project-item">
+                    <label>Deadline</label>
+                    <p>March 15, 2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <section class="checklist-section">
+            <div class="checklist-header">
+                <span class="material-symbols-outlined">checklist</span>
+                <h2>Verification Checklist</h2>
+            </div>
+
+            <div class="checklist">
+                <!-- Item 1 - Completed -->
+                <div class="check-item completed">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">check</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>Before Work Photos</h3>
+                        <p>Upload at least 3 geo-tagged photos of the site before starting work.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge done">Verified</span>
+                        <span class="check-time">Uploaded 2 days ago</span>
+                    </div>
+                </div>
+
+                <!-- Item 2 - Completed -->
+                <div class="check-item completed">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">check</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>During Work Video</h3>
+                        <p>Submit a 30-second video showing active construction progress.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge done">Verified</span>
+                        <span class="check-time">Uploaded yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Item 3 - Pending -->
+                <div class="check-item pending">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">hourglass_empty</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>After Work Photos</h3>
+                        <p>Upload final completion photos with geo-tags for verification.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge waiting">Pending Upload</span>
+                        <button class="upload-btn">
+                            <span class="material-symbols-outlined">upload</span>
+                            Upload Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Item 4 - Not Started -->
+                <div class="check-item">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">radio_button_unchecked</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>GPS Location Check</h3>
+                        <p>System will auto-verify work location matches registered site coordinates.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge ready">Awaiting Photos</span>
+                    </div>
+                </div>
+
+                <!-- Item 5 - Not Started -->
+                <div class="check-item">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">radio_button_unchecked</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>Community Sign-off</h3>
+                        <p>At least 3 villagers must verify the work quality through the app.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge ready">Not Started</span>
+                    </div>
+                </div>
+
+                <!-- Item 6 - Not Started -->
+                <div class="check-item">
+                    <div class="check-status">
+                        <span class="material-symbols-outlined">radio_button_unchecked</span>
+                    </div>
+                    <div class="check-content">
+                        <h3>Final Audit Approval</h3>
+                        <p>Sarpanch and block officer final review and fund release authorization.</p>
+                    </div>
+                    <div class="check-action">
+                        <span class="check-badge ready">Not Started</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="verify-footer">
+        <div class="footer-brand">
+            <span class="material-symbols-outlined">account_balance</span>
+            <strong>GRAM-SABHA</strong>
+        </div>
+        <p class="footer-text">© 2024 Digital Governance Division • Ministry of Rural Development</p>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Support</a>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Audit | GRAM-SABHA Admin</title>
+    <meta name="description" content="System security monitoring and audit logs">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Admin Console</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="admin-panel.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Overview</span>
+                </a>
+                <a href="user-management.html" class="nav-item">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>User Management</span>
+                </a>
+                <a href="village-registry.html" class="nav-item">
+                    <span class="material-symbols-outlined">location_city</span>
+                    <span>Village Registry</span>
+                </a>
+                <a href="security-audit.html" class="nav-item active">
+                    <span class="material-symbols-outlined">shield</span>
+                    <span>Security & Audit</span>
+                </a>
+                <a href="system-settings.html" class="nav-item">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>System Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">PS</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Priya Sharma</p>
+                        <p class="sidebar-user-role">System Administrator</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout-btn">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>Security & Audit</h2>
+                    <p>Monitor system security and review audit logs</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary">
+                        <span class="material-symbols-outlined">download</span>
+                        Export Logs
+                    </button>
+                    <button class="btn-primary">
+                        <span class="material-symbols-outlined">refresh</span>
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Security Status -->
+                <div class="security-status">
+                    <div class="status-card healthy">
+                        <div class="status-icon">
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </div>
+                        <div class="status-content">
+                            <h3>System Status</h3>
+                            <span class="status-text">All Systems Operational</span>
+                        </div>
+                        <div class="status-time">Last checked: 2 min ago</div>
+                    </div>
+                </div>
+
+                <!-- Security Stats -->
+                <div class="security-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <span class="material-symbols-outlined">login</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">2,456</span>
+                            <span class="stat-label">Successful Logins (24h)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <span class="material-symbols-outlined">error</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Failed Attempts (24h)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <span class="material-symbols-outlined">warning</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">Security Alerts</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <span class="material-symbols-outlined">verified_user</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">99.8%</span>
+                            <span class="stat-label">Uptime (30 days)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div class="security-grid">
+                    <!-- Security Alerts -->
+                    <div class="security-panel">
+                        <div class="panel-header">
+                            <h3><span class="material-symbols-outlined">warning</span> Security Alerts</h3>
+                            <button class="btn-text">View All</button>
+                        </div>
+                        <div class="alerts-list">
+                            <div class="alert-item high">
+                                <div class="alert-icon">
+                                    <span class="material-symbols-outlined">gpp_maybe</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Multiple Failed Login Attempts</strong>
+                                    <p>5 failed attempts for user ID: 9876543999</p>
+                                    <span class="alert-time">10 minutes ago</span>
+                                </div>
+                                <button class="btn-action">Investigate</button>
+                            </div>
+                            <div class="alert-item medium">
+                                <div class="alert-icon">
+                                    <span class="material-symbols-outlined">sync_problem</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Unusual Transaction Pattern</strong>
+                                    <p>Large fund transfer in Shyampur village</p>
+                                    <span class="alert-time">45 minutes ago</span>
+                                </div>
+                                <button class="btn-action">Review</button>
+                            </div>
+                            <div class="alert-item low">
+                                <div class="alert-icon">
+                                    <span class="material-symbols-outlined">info</span>
+                                </div>
+                                <div class="alert-content">
+                                    <strong>Session Timeout Warning</strong>
+                                    <p>Admin session inactive for extended period</p>
+                                    <span class="alert-time">2 hours ago</span>
+                                </div>
+                                <button class="btn-action">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="security-panel">
+                        <div class="panel-header">
+                            <h3><span class="material-symbols-outlined">history</span> Audit Trail</h3>
+                            <button class="btn-text">View All</button>
+                        </div>
+                        <div class="audit-list">
+                            <div class="audit-item">
+                                <div class="audit-icon login">
+                                    <span class="material-symbols-outlined">login</span>
+                                </div>
+                                <div class="audit-content">
+                                    <strong>Admin Login</strong>
+                                    <p>Priya Sharma logged in from Jaipur</p>
+                                    <span class="audit-time">Just now</span>
+                                </div>
+                            </div>
+                            <div class="audit-item">
+                                <div class="audit-icon approval">
+                                    <span class="material-symbols-outlined">check_circle</span>
+                                </div>
+                                <div class="audit-content">
+                                    <strong>Fund Release Approved</strong>
+                                    <p>₹85,000 approved for Rampur - PRJ-2024-1089</p>
+                                    <span class="audit-time">15 min ago</span>
+                                </div>
+                            </div>
+                            <div class="audit-item">
+                                <div class="audit-icon user">
+                                    <span class="material-symbols-outlined">person_add</span>
+                                </div>
+                                <div class="audit-content">
+                                    <strong>New User Registered</strong>
+                                    <p>Suresh Patel registered in Shyampur</p>
+                                    <span class="audit-time">30 min ago</span>
+                                </div>
+                            </div>
+                            <div class="audit-item">
+                                <div class="audit-icon settings">
+                                    <span class="material-symbols-outlined">settings</span>
+                                </div>
+                                <div class="audit-content">
+                                    <strong>System Configuration Changed</strong>
+                                    <p>Notification settings updated</p>
+                                    <span class="audit-time">1 hour ago</span>
+                                </div>
+                            </div>
+                            <div class="audit-item">
+                                <div class="audit-icon logout">
+                                    <span class="material-symbols-outlined">logout</span>
+                                </div>
+                                <div class="audit-content">
+                                    <strong>User Logout</strong>
+                                    <p>Ramesh Kumar logged out</p>
+                                    <span class="audit-time">2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['admin']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+        });
+    </script>
+    <style>
+        .btn-secondary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #f1f5f9;
+            color: var(--text-secondary);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .security-status {
+            margin-bottom: 2rem;
+        }
+        
+        .status-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 2px solid;
+        }
+        
+        .status-card.healthy {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4 0%, white 100%);
+        }
+        
+        .status-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-card.healthy .status-icon {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .status-icon .material-symbols-outlined {
+            font-size: 2rem;
+        }
+        
+        .status-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #16a34a;
+        }
+        
+        .status-time {
+            margin-left: auto;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .security-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.red { background: #fee2e2; color: #dc2626; }
+        .stat-icon.orange { background: #ffedd5; color: #ea580c; }
+        .stat-icon.blue { background: #dbeafe; color: #2563eb; }
+        
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .security-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .security-panel {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .panel-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .btn-text {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .alerts-list, .audit-list {
+            padding: 0.5rem;
+        }
+        
+        .alert-item, .audit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            transition: var(--transition-fast);
+        }
+        
+        .alert-item:hover, .audit-item:hover {
+            background: #f8fafc;
+        }
+        
+        .alert-item.high {
+            background: #fef2f2;
+        }
+        
+        .alert-item.medium {
+            background: #fffbeb;
+        }
+        
+        .alert-icon, .audit-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .alert-item.high .alert-icon { background: #fee2e2; color: #dc2626; }
+        .alert-item.medium .alert-icon { background: #fef3c7; color: #d97706; }
+        .alert-item.low .alert-icon { background: #e2e8f0; color: #64748b; }
+        
+        .audit-icon.login { background: #dcfce7; color: #16a34a; }
+        .audit-icon.approval { background: #dbeafe; color: #2563eb; }
+        .audit-icon.user { background: #f3e8ff; color: #7c3aed; }
+        .audit-icon.settings { background: #e2e8f0; color: #64748b; }
+        .audit-icon.logout { background: #ffedd5; color: #ea580c; }
+        
+        .alert-content, .audit-content {
+            flex: 1;
+        }
+        
+        .alert-content strong, .audit-content strong {
+            display: block;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-content p, .audit-content p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-time, .audit-time {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+        
+        .btn-action {
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        
+        .btn-action:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-logout-btn {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1200px) {
+            .security-stats { grid-template-columns: repeat(2, 1fr); }
+            .security-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</body>
+</html>

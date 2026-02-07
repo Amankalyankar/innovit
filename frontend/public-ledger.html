@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Budget & Work Ledger | GRAM-SABHA</title>
+    <meta name="description" content="Transparent view of village funds and project progress">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Ledger Specific Styles */
+        .ledger-header {
+            background: #0f172a;
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .ledger-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ledger-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ledger-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ledger-logo h1 {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .ledger-logo p {
+            font-size: 0.625rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .ledger-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .ledger-nav a {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94a3b8;
+            transition: var(--transition-fast);
+        }
+
+        .ledger-nav a:hover,
+        .ledger-nav a.active {
+            color: var(--white);
+        }
+
+        .village-select {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: var(--radius-lg);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .ledger-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+        }
+
+        /* Page Title */
+        .page-title {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .summary-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .summary-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .summary-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .summary-card.primary .summary-amount {
+            color: var(--primary);
+        }
+
+        .summary-card.warning {
+            border-color: #fde68a;
+            background: #fffbeb;
+        }
+
+        .summary-card.warning .summary-amount {
+            color: #d97706;
+        }
+
+        .summary-sub {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .amount-bar {
+            display: flex;
+            height: 0.5rem;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-top: 1.5rem;
+            background: #e2e8f0;
+        }
+
+        .bar-spent {
+            background: var(--primary);
+        }
+
+        .bar-pending {
+            background: #fbbf24;
+        }
+
+        .bar-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .bar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bar-legend span::before {
+            content: '';
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+
+        .bar-legend span:first-child::before {
+            background: var(--primary);
+        }
+
+        .bar-legend span:last-child::before {
+            background: #fbbf24;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: var(--radius-full);
+            transition: var(--transition-fast);
+        }
+
+        .filter-tab:hover {
+            background: #f1f5f9;
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .project-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-main h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .project-main p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .project-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.in-progress {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.verified {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .project-funds {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
+        }
+
+        .fund-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fund-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .fund-amount {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .fund-amount.spent {
+            color: #dc2626;
+        }
+
+        .project-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .project-progress-bar {
+            flex: 1;
+            height: 0.75rem;
+            background: #e2e8f0;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .project-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+
+        .project-progress span {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .project-verification {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .verify-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .verify-item.success {
+            color: #16a34a;
+        }
+
+        .verify-item .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            background: #f8fafc;
+            border-radius: var(--radius-3xl);
+            padding: 2.5rem;
+        }
+
+        .activity-section h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .activity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.payment {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .activity-icon.approval {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .activity-icon.verify {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .activity-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .activity-content p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .activity-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--text-muted);
+        }
+
+        .activity-meta span strong {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ledger-nav {
+                display: none;
+            }
+
+            .project-funds {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ledger-header-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .project-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .project-status {
+                align-items: flex-start;
+            }
+
+            .project-verification {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="ledger-header">
+        <div class="ledger-header-content">
+            <a href="index.html" class="ledger-logo">
+                <div class="ledger-logo-icon">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div>
+                    <h1>GRAM-SABHA</h1>
+                    <p>Public Transparency Ledger</p>
+                </div>
+            </a>
+
+            <nav class="ledger-nav">
+                <a href="#" class="active">Budget Overview</a>
+                <a href="#">Active Projects</a>
+                <a href="#">Audit Reports</a>
+            </nav>
+
+            <div class="village-select">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>Rampur Village</span>
+                <span class="material-symbols-outlined">expand_more</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="ledger-main">
+        <div class="page-title">
+            <h2>Public Budget & Work Ledger</h2>
+            <p>Track every rupee spent in your village. 100% transparent financial records.</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card primary">
+                <div class="summary-label">
+                    <span class="material-symbols-outlined">savings</span>
+                    Total Funds Received
+                </div>
+                <div class="summary-amount">₹42,80,000</div>
+                <p class="summary-sub">FY 2024-25 • Updated 2 hours ago</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    <span class="material-symbols-outlined">payments</span>
+                    Funds Utilized
+                </div>
+                <div class="summary-amount">₹34,25,000</div>
+                <div class="amount-bar">
+                    <div class="bar-spent" style="width: 65%;"></div>
+                    <div class="bar-pending" style="width: 15%;"></div>
+                </div>
+                <div class="bar-legend">
+                    <span>Released (65%)</span>
+                    <span>Pending (15%)</span>
+                </div>
+            </div>
+
+            <div class="summary-card warning">
+                <div class="summary-label">
+                    <span class="material-symbols-outlined">hourglass_empty</span>
+                    Pending Approvals
+                </div>
+                <div class="summary-amount">₹4,55,000</div>
+                <p class="summary-sub">3 projects awaiting release</p>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <div class="section-header">
+                <h3>Active Projects</h3>
+                <div class="filter-tabs">
+                    <button class="filter-tab active">All</button>
+                    <button class="filter-tab">In Progress</button>
+                    <button class="filter-tab">Completed</button>
+                    <button class="filter-tab">Verified</button>
+                </div>
+            </div>
+
+            <div class="projects-list">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-main">
+                            <h4>Ward 4 Water Pipeline Extension</h4>
+                            <p>Project ID: WTR-2024-1089 • Started: 15 Jan 2024</p>
+                        </div>
+                        <div class="project-status">
+                            <span class="status-badge in-progress">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="project-funds">
+                        <div class="fund-item">
+                            <span class="fund-label">Sanctioned Amount</span>
+                            <span class="fund-amount">₹3,50,000</span>
+                        </div>
+                        <div class="fund-item">
+                            <span class="fund-label">Released So Far</span>
+                            <span class="fund-amount">₹2,45,000</span>
+                        </div>
+                        <div class="fund-item">
+                            <span class="fund-label">Spent</span>
+                            <span class="fund-amount spent">₹2,12,500</span>
+                        </div>
+                    </div>
+                    <div class="project-progress">
+                        <div class="project-progress-bar">
+                            <div class="project-progress-fill" style="width: 72%;"></div>
+                        </div>
+                        <span>72%</span>
+                    </div>
+                    <div class="project-verification">
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>Photo Verified</span>
+                        </div>
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>GPS Confirmed</span>
+                        </div>
+                        <div class="verify-item">
+                            <span class="material-symbols-outlined">pending</span>
+                            <span>Community Sign-off Pending</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-main">
+                            <h4>Primary School Boundary Wall</h4>
+                            <p>Project ID: EDU-2024-0892 • Completed: 28 Feb 2024</p>
+                        </div>
+                        <div class="project-status">
+                            <span class="status-badge verified">Verified & Closed</span>
+                        </div>
+                    </div>
+                    <div class="project-funds">
+                        <div class="fund-item">
+                            <span class="fund-label">Sanctioned Amount</span>
+                            <span class="fund-amount">₹1,85,000</span>
+                        </div>
+                        <div class="fund-item">
+                            <span class="fund-label">Released</span>
+                            <span class="fund-amount">₹1,85,000</span>
+                        </div>
+                        <div class="fund-item">
+                            <span class="fund-label">Spent</span>
+                            <span class="fund-amount">₹1,82,400</span>
+                        </div>
+                    </div>
+                    <div class="project-progress">
+                        <div class="project-progress-bar">
+                            <div class="project-progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <span>100%</span>
+                    </div>
+                    <div class="project-verification">
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>All Photos Verified</span>
+                        </div>
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>GPS Confirmed</span>
+                        </div>
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>Community Approved</span>
+                        </div>
+                        <div class="verify-item success">
+                            <span class="material-symbols-outlined">verified</span>
+                            <span>Audit Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Section -->
+        <section class="activity-section">
+            <h3>Recent Activity</h3>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon payment">
+                        <span class="material-symbols-outlined">payments</span>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Payment Released to Contractor</h4>
+                        <p>₹85,000 released to Sharma Constructions for pipeline work</p>
+                        <div class="activity-meta">
+                            <span><strong>Today</strong>, 11:30 AM</span>
+                            <span>PFMS Ref: #PF2024-89012</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon approval">
+                        <span class="material-symbols-outlined">task_alt</span>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Sarpanch Approval Received</h4>
+                        <p>Street lighting project for Ward 2 approved for fund release</p>
+                        <div class="activity-meta">
+                            <span><strong>Yesterday</strong>, 4:15 PM</span>
+                            <span>Approved by: Ramesh Kumar (Sarpanch)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon verify">
+                        <span class="material-symbols-outlined">verified</span>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Work Verification Complete</h4>
+                        <p>School boundary wall project passed all verification checks</p>
+                        <div class="activity-meta">
+                            <span><strong>2 days ago</strong></span>
+                            <span>AI + Community Verification</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | GRAM-SABHA</title>
+    <meta name="description" content="Your personal village dashboard - track issues, vote on projects, and access services">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div class="logo-text">
+                    <h1>GRAM-SABHA</h1>
+                    <p id="villageName">रामपुर गांव</p>
+                </div>
+            </a>
+        </div>
+        <div class="header-center">
+            <div class="search-box">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" placeholder="Search issues, projects...">
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="notification-btn">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="notification-badge">3</span>
+            </button>
+            <div class="user-profile" id="userProfile">
+                <div class="user-avatar" id="userAvatar">RK</div>
+                <div class="user-info">
+                    <p class="user-name" id="userName">Ravi Kumar</p>
+                    <p class="user-role" id="userRole">Villager</p>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="my-profile.html"><span class="material-symbols-outlined">person</span> My Profile</a>
+                    <a href="my-profile.html"><span class="material-symbols-outlined">settings</span> Settings</a>
+                    <hr>
+                    <a href="#" onclick="GramSabha.logout()"><span class="material-symbols-outlined">logout</span> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h2 id="welcomeMsg">Good Morning, Ravi! 👋</h2>
+                <p>Here's what's happening in your village today</p>
+            </div>
+            <div class="quick-stats">
+                <div class="stat-chip">
+                    <span class="material-symbols-outlined">how_to_vote</span>
+                    <span>3 Active Votes</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    <span>2 Issues Resolved</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Issue Categories -->
+        <section class="categories-section">
+            <h3 class="section-title">Report an Issue</h3>
+            <div class="category-grid">
+                <a href="raise-issue.html?category=water" class="category-card water">
+                    <span class="material-symbols-outlined">water_drop</span>
+                    <span>Water</span>
+                    <span class="category-count">12</span>
+                </a>
+                <a href="raise-issue.html?category=roads" class="category-card roads">
+                    <span class="material-symbols-outlined">add_road</span>
+                    <span>Roads</span>
+                    <span class="category-count">8</span>
+                </a>
+                <a href="raise-issue.html?category=electricity" class="category-card electricity">
+                    <span class="material-symbols-outlined">electric_bolt</span>
+                    <span>Electricity</span>
+                    <span class="category-count">5</span>
+                </a>
+                <a href="raise-issue.html?category=sanitation" class="category-card sanitation">
+                    <span class="material-symbols-outlined">delete_sweep</span>
+                    <span>Sanitation</span>
+                    <span class="category-count">7</span>
+                </a>
+                <a href="raise-issue.html?category=education" class="category-card education">
+                    <span class="material-symbols-outlined">school</span>
+                    <span>Education</span>
+                    <span class="category-count">3</span>
+                </a>
+                <a href="raise-issue.html?category=other" class="category-card other">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                    <span>Other</span>
+                    <span class="category-count">4</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Active Issues to Vote -->
+        <section class="issues-section">
+            <div class="section-header">
+                <h3 class="section-title">Active Issues - Vote Now!</h3>
+                <a href="public-ledger.html" class="view-all">View All →</a>
+            </div>
+            <div class="issues-grid" id="issuesGrid">
+                <!-- Issues will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Village Wallet -->
+        <section class="wallet-section">
+            <div class="wallet-card">
+                <div class="wallet-header">
+                    <h3>Village Fund Status</h3>
+                    <a href="public-ledger.html" class="wallet-link">View Full Ledger →</a>
+                </div>
+                <div class="wallet-stats">
+                    <div class="wallet-stat main">
+                        <span class="stat-label">Total Funds Received</span>
+                        <span class="stat-value" id="totalFunds">₹42,80,000</span>
+                    </div>
+                    <div class="wallet-stat">
+                        <span class="stat-label">Spent</span>
+                        <span class="stat-value spent" id="spentFunds">₹34,25,000</span>
+                    </div>
+                    <div class="wallet-stat">
+                        <span class="stat-label">Available</span>
+                        <span class="stat-value available" id="availableFunds">₹4,00,000</span>
+                    </div>
+                </div>
+                <div class="wallet-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%;"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>80% Utilized</span>
+                        <span>FY 2024-25</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Reported Issues -->
+        <section class="my-issues-section">
+            <div class="section-header">
+                <h3 class="section-title">My Reported Issues</h3>
+                <a href="raise-issue.html" class="action-btn">
+                    <span class="material-symbols-outlined">add</span>
+                    New Issue
+                </a>
+            </div>
+            <div class="my-issues-list">
+                <div class="my-issue-item">
+                    <div class="issue-icon water">
+                        <span class="material-symbols-outlined">water_drop</span>
+                    </div>
+                    <div class="issue-details">
+                        <h4>Broken Hand Pump - Ward 4</h4>
+                        <p>Reported on Feb 5, 2024</p>
+                    </div>
+                    <div class="issue-status reviewing">
+                        <span class="material-symbols-outlined">hourglass_top</span>
+                        Under Review
+                    </div>
+                </div>
+                <div class="my-issue-item">
+                    <div class="issue-icon roads">
+                        <span class="material-symbols-outlined">add_road</span>
+                    </div>
+                    <div class="issue-details">
+                        <h4>Pothole near School</h4>
+                        <p>Reported on Jan 28, 2024</p>
+                    </div>
+                    <div class="issue-status in-progress">
+                        <span class="material-symbols-outlined">pending</span>
+                        In Progress
+                    </div>
+                </div>
+                <div class="my-issue-item">
+                    <div class="issue-icon electricity">
+                        <span class="material-symbols-outlined">electric_bolt</span>
+                    </div>
+                    <div class="issue-details">
+                        <h4>Street Light Not Working</h4>
+                        <p>Reported on Jan 15, 2024</p>
+                    </div>
+                    <div class="issue-status resolved">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        Resolved
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions-section">
+            <h3 class="section-title">Quick Actions</h3>
+            <div class="quick-actions-grid">
+                <a href="raise-issue.html" class="quick-action-card">
+                    <span class="material-symbols-outlined">campaign</span>
+                    <span>Report Issue</span>
+                </a>
+                <a href="public-ledger.html" class="quick-action-card">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span>Check Budget</span>
+                </a>
+                <a href="#" class="quick-action-card" onclick="recordVoice()">
+                    <span class="material-symbols-outlined">mic</span>
+                    <span>Voice Report</span>
+                </a>
+                <a href="contractor-verification.html" class="quick-action-card">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Verify Work</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-content">
+            <p>🇮🇳 GRAM-SABHA • Digital India Initiative</p>
+            <p>Helpline: 1800-111-2222</p>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['villager']);
+            if (!user) return;
+            
+            // Update user info in header
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userRole').textContent = user.roleName;
+            document.getElementById('userAvatar').textContent = user.avatar;
+            document.getElementById('villageName').textContent = GramSabha.VILLAGE_DATA.nameHindi + ' गांव';
+            
+            // Update welcome message
+            const greeting = GramSabha.getGreeting();
+            document.getElementById('welcomeMsg').textContent = `${greeting}, ${user.name.split(' ')[0]}! 👋`;
+            
+            // Update budget stats
+            const budget = GramSabha.BUDGET_DATA;
+            document.getElementById('totalFunds').textContent = GramSabha.formatCurrency(budget.totalReceived);
+            document.getElementById('spentFunds').textContent = GramSabha.formatCurrency(budget.totalSpent);
+            document.getElementById('availableFunds').textContent = GramSabha.formatCurrency(budget.available);
+            
+            // Populate issues
+            populateIssues();
+            
+            // User profile dropdown
+            document.getElementById('userProfile').addEventListener('click', function() {
+                document.getElementById('dropdownMenu').classList.toggle('show');
+            });
+        });
+        
+        function populateIssues() {
+            const issuesGrid = document.getElementById('issuesGrid');
+            const issues = GramSabha.ISSUES_DATA;
+            
+            issuesGrid.innerHTML = issues.map(issue => `
+                <div class="issue-card">
+                    <div class="issue-card-header">
+                        <span class="issue-category ${issue.category}">${issue.categoryName}</span>
+                        <span class="issue-status-badge ${issue.status}">${issue.statusName}</span>
+                    </div>
+                    <h4 class="issue-title">${issue.title}</h4>
+                    <p class="issue-desc">${issue.description}</p>
+                    <div class="issue-meta">
+                        <span><span class="material-symbols-outlined">person</span> ${issue.reportedBy}</span>
+                        <span><span class="material-symbols-outlined">calendar_today</span> ${GramSabha.formatDate(issue.reportedDate)}</span>
+                    </div>
+                    <div class="issue-footer">
+                        <button class="vote-btn ${issue.userVoted ? 'voted' : ''}" onclick="toggleVote(this, '${issue.id}')">
+                            <span class="material-symbols-outlined">${issue.userVoted ? 'thumb_up' : 'thumb_up_off_alt'}</span>
+                            <span class="vote-count">${issue.votes}</span>
+                        </button>
+                        <button class="share-btn">
+                            <span class="material-symbols-outlined">share</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function toggleVote(btn, issueId) {
+            const issue = GramSabha.ISSUES_DATA.find(i => i.id === issueId);
+            if (issue) {
+                issue.userVoted = !issue.userVoted;
+                issue.votes += issue.userVoted ? 1 : -1;
+                
+                btn.classList.toggle('voted');
+                btn.querySelector('.material-symbols-outlined').textContent = issue.userVoted ? 'thumb_up' : 'thumb_up_off_alt';
+                btn.querySelector('.vote-count').textContent = issue.votes;
+                
+                GramSabha.showNotification(issue.userVoted ? 'Vote recorded! 👍' : 'Vote removed', 'success');
+            }
+        }
+        
+        function recordVoice() {
+            GramSabha.showNotification('🎤 Voice recording started... Speak your issue in Hindi or English', 'info');
+        }
+    </script>
+    <style>
+        /* Dashboard Header */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--white);
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .logo-text h1 {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            font-size: 0.625rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .header-center {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-full);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            width: 100%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: #f1f5f9;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.625rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #16a34a 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .user-role {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition-fast);
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8fafc;
+            color: var(--primary);
+        }
+
+        .dropdown-menu hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 0.25rem 0;
+        }
+
+        /* Main Content */
+        .dashboard-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-content h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+
+        .welcome-content p {
+            color: var(--text-secondary);
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .stat-chip .material-symbols-outlined {
+            font-size: 1.25rem;
+        }
+
+        /* Section Styles */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Categories */
+        .categories-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-xl);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .category-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-card .material-symbols-outlined {
+            font-size: 2rem;
+        }
+
+        .category-card span:nth-child(2) {
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .category-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-card.water .material-symbols-outlined { color: #0ea5e9; }
+        .category-card.roads .material-symbols-outlined { color: #f59e0b; }
+        .category-card.electricity .material-symbols-outlined { color: #eab308; }
+        .category-card.sanitation .material-symbols-outlined { color: #22c55e; }
+        .category-card.education .material-symbols-outlined { color: #8b5cf6; }
+        .category-card.other .material-symbols-outlined { color: #6b7280; }
+
+        /* Issues Grid */
+        .issues-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .issue-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .issue-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .issue-category {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .issue-category.water { background: #e0f2fe; color: #0369a1; }
+        .issue-category.roads { background: #fef3c7; color: #b45309; }
+        .issue-category.electricity { background: #fef9c3; color: #a16207; }
+
+        .issue-status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius);
+            font-size: 0.625rem;
+            font-weight: 600;
+        }
+
+        .issue-status-badge.reviewing { background: #fef3c7; color: #92400e; }
+        .issue-status-badge.in-progress { background: #dbeafe; color: #1e40af; }
+        .issue-status-badge.approved { background: #dcfce7; color: #166534; }
+
+        .issue-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .issue-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .issue-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .issue-meta .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        .issue-footer {
+            display: flex;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .vote-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition-fast);
+        }
+
+        .vote-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .vote-btn.voted {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .share-btn {
+            padding: 0.5rem;
+            background: #f1f5f9;
+            border-radius: 50%;
+        }
+
+        /* Wallet Section */
+        .wallet-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            color: var(--white);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .wallet-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .wallet-link {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .wallet-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .wallet-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wallet-stat.main {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .wallet-stat.main .stat-value {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .stat-value.spent { color: #f87171; }
+        .stat-value.available { color: #4ade80; }
+
+        .wallet-progress {
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+        }
+
+        .progress-bar {
+            height: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-full);
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* My Issues */
+        .my-issues-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .my-issues-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .my-issue-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-xl);
+        }
+
+        .issue-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .issue-icon.water { background: #e0f2fe; color: #0369a1; }
+        .issue-icon.roads { background: #fef3c7; color: #b45309; }
+        .issue-icon.electricity { background: #fef9c3; color: #a16207; }
+
+        .issue-details {
+            flex: 1;
+        }
+
+        .issue-details h4 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .issue-details p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .issue-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .issue-status.reviewing { background: #fef3c7; color: #92400e; }
+        .issue-status.in-progress { background: #dbeafe; color: #1e40af; }
+        .issue-status.resolved { background: #dcfce7; color: #166534; }
+
+        /* Quick Actions */
+        .quick-actions-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .quick-action-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 2rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-xl);
+            transition: var(--transition);
+        }
+
+        .quick-action-card:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .quick-action-card .material-symbols-outlined {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .quick-action-card span:last-child {
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .dashboard-footer {
+            background: #f8fafc;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-content p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .issues-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .header-center {
+                order: 3;
+                width: 100%;
+                margin: 0;
+                max-width: none;
+            }
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .issues-grid {
+                grid-template-columns: 1fr;
+            }
+            .wallet-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contractors | GRAM-SABHA</title>
+    <meta name="description" content="Manage registered contractors for village development projects">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Sarpanch Portal</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="sarpanch-portal.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pending-approvals.html" class="nav-item">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    <span>Pending Approvals</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="active-projects.html" class="nav-item">
+                    <span class="material-symbols-outlined">construction</span>
+                    <span>Active Projects</span>
+                </a>
+                <a href="public-ledger.html" class="nav-item">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span>Budget & Funds</span>
+                </a>
+                <a href="community-issues.html" class="nav-item">
+                    <span class="material-symbols-outlined">campaign</span>
+                    <span>Community Issues</span>
+                    <span class="nav-badge warning">12</span>
+                </a>
+                <a href="contractor-verification.html" class="nav-item">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Work Verification</span>
+                </a>
+                <a href="contractors.html" class="nav-item active">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span>Contractors</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar">RK</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Ramesh Kumar</p>
+                        <p class="sidebar-user-role">Sarpanch • Rampur</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>Registered Contractors</h2>
+                    <p>6 contractors available for project assignment</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-primary">
+                        <span class="material-symbols-outlined">person_add</span>
+                        Add Contractor
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Contractor Cards Grid -->
+                <div class="contractors-grid">
+                    <!-- Contractor 1 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar">SC</div>
+                            <div class="contractor-status available">Available</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Sharma Constructions</h3>
+                            <p class="contractor-type">General Construction</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">4.8 (23 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">23</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹45L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">96%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Water Supply</span>
+                            <span class="specialty">Roads</span>
+                            <span class="specialty">Buildings</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 98765 43210</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Jaipur</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project" onclick="assignProject('Sharma Constructions')">
+                                <span class="material-symbols-outlined">assignment</span>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contractor 2 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">DC</div>
+                            <div class="contractor-status busy">On Project</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Devi Construction</h3>
+                            <p class="contractor-type">Building & Infrastructure</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">4.9 (18 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">18</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹32L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">100%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Schools</span>
+                            <span class="specialty">Community Centers</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 98765 12345</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Rampur</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project disabled" disabled>
+                                <span class="material-symbols-outlined">block</span>
+                                Busy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contractor 3 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar" style="background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);">GC</div>
+                            <div class="contractor-status available">Available</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Gupta Contractors</h3>
+                            <p class="contractor-type">Road & Highway</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-text">4.5 (15 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">15</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹28L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">87%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Roads</span>
+                            <span class="specialty">Drainage</span>
+                            <span class="specialty">Footpaths</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 99887 65432</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Jaipur</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project" onclick="assignProject('Gupta Contractors')">
+                                <span class="material-symbols-outlined">assignment</span>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contractor 4 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar" style="background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);">SB</div>
+                            <div class="contractor-status available">Available</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Singh Builders</h3>
+                            <p class="contractor-type">Sanitation & Plumbing</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-text">4.3 (12 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">12</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹18L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">92%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Toilets</span>
+                            <span class="specialty">Sewage</span>
+                            <span class="specialty">Water Tanks</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 98123 45678</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Sanganer</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project" onclick="assignProject('Singh Builders')">
+                                <span class="material-symbols-outlined">assignment</span>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contractor 5 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">GS</div>
+                            <div class="contractor-status available">Available</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Green Solutions</h3>
+                            <p class="contractor-type">Eco & Sustainability</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">4.7 (8 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">8</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹12L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">100%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Rainwater</span>
+                            <span class="specialty">Solar</span>
+                            <span class="specialty">Gardens</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 99001 23456</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Jaipur</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project" onclick="assignProject('Green Solutions')">
+                                <span class="material-symbols-outlined">assignment</span>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contractor 6 -->
+                    <div class="contractor-card">
+                        <div class="contractor-header">
+                            <div class="contractor-avatar" style="background: linear-gradient(135deg, #eab308 0%, #facc15 100%);">RE</div>
+                            <div class="contractor-status busy">On Project</div>
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Rajasthan Electricals</h3>
+                            <p class="contractor-type">Electrical Works</p>
+                            <div class="contractor-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-text">4.4 (20 projects)</span>
+                            </div>
+                        </div>
+                        <div class="contractor-stats">
+                            <div class="stat">
+                                <span class="stat-value">20</span>
+                                <span class="stat-label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹22L</span>
+                                <span class="stat-label">Total Value</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">90%</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="contractor-specialties">
+                            <span class="specialty">Street Lights</span>
+                            <span class="specialty">Wiring</span>
+                            <span class="specialty">Transformers</span>
+                        </div>
+                        <div class="contractor-contact">
+                            <span><span class="material-symbols-outlined">phone</span> 98765 00000</span>
+                            <span><span class="material-symbols-outlined">location_on</span> Jaipur</span>
+                        </div>
+                        <div class="contractor-actions">
+                            <button class="btn-view-profile">View Profile</button>
+                            <button class="btn-assign-project disabled" disabled>
+                                <span class="material-symbols-outlined">block</span>
+                                Busy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['sarpanch']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+        });
+        
+        function assignProject(name) {
+            GramSabha.showNotification(`✅ Opening project assignment for: ${name}`, 'success');
+        }
+    </script>
+    <style>
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .contractors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .contractor-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .contractor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .contractor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .contractor-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+        
+        .contractor-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .contractor-status.available { background: #dcfce7; color: #16a34a; }
+        .contractor-status.busy { background: #fef3c7; color: #d97706; }
+        
+        .contractor-info h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contractor-type {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .contractor-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stars {
+            color: #fbbf24;
+        }
+        
+        .rating-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .contractor-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+        }
+        
+        .contractor-stats .stat {
+            text-align: center;
+        }
+        
+        .contractor-stats .stat-value {
+            display: block;
+            font-size: 1.125rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .contractor-stats .stat-label {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .contractor-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .specialty {
+            padding: 0.25rem 0.75rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .contractor-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
+        }
+        
+        .contractor-contact span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .contractor-contact .material-symbols-outlined {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .contractor-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-view-profile {
+            flex: 1;
+            padding: 0.75rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+        
+        .btn-view-profile:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-assign-project {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition-fast);
+        }
+        
+        .btn-assign-project:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-assign-project.disabled {
+            background: #e2e8f0;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        .sidebar-logout {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1200px) {
+            .contractors-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .contractors-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</body>
+</html>

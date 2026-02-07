@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings | GRAM-SABHA Admin</title>
+    <meta name="description" content="Configure system-wide settings and preferences">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Admin Console</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="admin-panel.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Overview</span>
+                </a>
+                <a href="user-management.html" class="nav-item">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>User Management</span>
+                </a>
+                <a href="village-registry.html" class="nav-item">
+                    <span class="material-symbols-outlined">location_city</span>
+                    <span>Village Registry</span>
+                </a>
+                <a href="security-audit.html" class="nav-item">
+                    <span class="material-symbols-outlined">shield</span>
+                    <span>Security & Audit</span>
+                </a>
+                <a href="system-settings.html" class="nav-item active">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>System Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">PS</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Priya Sharma</p>
+                        <p class="sidebar-user-role">System Administrator</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout-btn">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>System Settings</h2>
+                    <p>Configure and manage system-wide settings</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-primary" onclick="saveSettings()">
+                        <span class="material-symbols-outlined">save</span>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Settings Navigation -->
+                <div class="settings-layout">
+                    <div class="settings-nav">
+                        <button class="settings-nav-item active" data-section="general">
+                            <span class="material-symbols-outlined">tune</span>
+                            General Settings
+                        </button>
+                        <button class="settings-nav-item" data-section="notifications">
+                            <span class="material-symbols-outlined">notifications</span>
+                            Notifications
+                        </button>
+                        <button class="settings-nav-item" data-section="localization">
+                            <span class="material-symbols-outlined">language</span>
+                            Localization
+                        </button>
+                        <button class="settings-nav-item" data-section="permissions">
+                            <span class="material-symbols-outlined">admin_panel_settings</span>
+                            Permissions
+                        </button>
+                        <button class="settings-nav-item" data-section="backup">
+                            <span class="material-symbols-outlined">backup</span>
+                            Backup & Restore
+                        </button>
+                    </div>
+
+                    <div class="settings-content">
+                        <!-- General Settings Section -->
+                        <div class="settings-section active" id="section-general">
+                            <div class="section-header">
+                                <h3>General Settings</h3>
+                                <p>Basic system configuration options</p>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Platform Name</label>
+                                        <p>The name displayed across the platform</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" value="GRAM-SABHA" class="setting-input">
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>District Name</label>
+                                        <p>Primary district this system is deployed for</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" value="Jaipur" class="setting-input">
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>State</label>
+                                        <p>State for regional settings</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="RJ" selected>Rajasthan</option>
+                                            <option value="UP">Uttar Pradesh</option>
+                                            <option value="MP">Madhya Pradesh</option>
+                                            <option value="GJ">Gujarat</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Maintenance Mode</label>
+                                        <p>Temporarily disable access for non-admin users</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Enable Demo Mode</label>
+                                        <p>Allow demo accounts for testing</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Section -->
+                        <div class="settings-section" id="section-notifications">
+                            <div class="section-header">
+                                <h3>Notification Settings</h3>
+                                <p>Configure how notifications are sent</p>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>SMS Notifications</label>
+                                        <p>Send SMS alerts for important updates</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Email Notifications</label>
+                                        <p>Send email alerts for system events</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Push Notifications</label>
+                                        <p>Browser push notifications for real-time alerts</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>WhatsApp Updates</label>
+                                        <p>Send updates via WhatsApp Business API</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Localization Section -->
+                        <div class="settings-section" id="section-localization">
+                            <div class="section-header">
+                                <h3>Localization Settings</h3>
+                                <p>Language and regional preferences</p>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Primary Language</label>
+                                        <p>Default language for the platform</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="en">English</option>
+                                            <option value="hi" selected>Hindi (हिंदी)</option>
+                                            <option value="mr">Marathi</option>
+                                            <option value="gu">Gujarati</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Enable Bilingual Mode</label>
+                                        <p>Show content in both English and Hindi</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Date Format</label>
+                                        <p>Format for displaying dates</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="dd/mm/yyyy" selected>DD/MM/YYYY</option>
+                                            <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                            <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Currency Symbol</label>
+                                        <p>Currency for financial displays</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="₹" selected>₹ (INR)</option>
+                                            <option value="$">$ (USD)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Permissions Section -->
+                        <div class="settings-section" id="section-permissions">
+                            <div class="section-header">
+                                <h3>Permission Settings</h3>
+                                <p>Configure role-based access controls</p>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="permission-card">
+                                    <div class="permission-header">
+                                        <span class="permission-icon villager">
+                                            <span class="material-symbols-outlined">person</span>
+                                        </span>
+                                        <h4>Villager</h4>
+                                    </div>
+                                    <div class="permission-list">
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked disabled> View Dashboard
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Report Issues
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Vote on Issues
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> View Public Ledger
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox"> Submit RTI Requests
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="permission-card">
+                                    <div class="permission-header">
+                                        <span class="permission-icon sarpanch">
+                                            <span class="material-symbols-outlined">gavel</span>
+                                        </span>
+                                        <h4>Sarpanch</h4>
+                                    </div>
+                                    <div class="permission-list">
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked disabled> All Villager Permissions
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Approve Fund Requests
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Manage Projects
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Verify Work Completion
+                                        </label>
+                                        <label class="permission-item">
+                                            <input type="checkbox" checked> Manage Contractors
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backup Section -->
+                        <div class="settings-section" id="section-backup">
+                            <div class="section-header">
+                                <h3>Backup & Restore</h3>
+                                <p>Manage system backups and data recovery</p>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="backup-status">
+                                    <div class="backup-info">
+                                        <span class="material-symbols-outlined">cloud_done</span>
+                                        <div>
+                                            <strong>Last Backup: Today 06:00 AM</strong>
+                                            <p>Automated daily backup successful</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn-backup">
+                                        <span class="material-symbols-outlined">backup</span>
+                                        Backup Now
+                                    </button>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Automatic Backups</label>
+                                        <p>Schedule automatic daily backups</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Backup Frequency</label>
+                                        <p>How often to create backups</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="daily" selected>Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <label>Backup Retention</label>
+                                        <p>How long to keep backup files</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select">
+                                            <option value="7">7 Days</option>
+                                            <option value="30" selected>30 Days</option>
+                                            <option value="90">90 Days</option>
+                                            <option value="365">1 Year</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['admin']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+            
+            // Settings navigation
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    
+                    document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById('section-' + section).classList.add('active');
+                });
+            });
+        });
+        
+        function saveSettings() {
+            GramSabha.showNotification('✅ Settings saved successfully!', 'success');
+        }
+    </script>
+    <style>
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        .settings-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-align: left;
+            border: 1px solid #e2e8f0;
+            transition: var(--transition-fast);
+        }
+        
+        .settings-nav-item:hover {
+            background: #f8fafc;
+            color: var(--text-primary);
+        }
+        
+        .settings-nav-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .settings-content {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .settings-section {
+            display: none;
+            padding: 2rem;
+        }
+        
+        .settings-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .section-header h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+        }
+        
+        .setting-info label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .setting-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .setting-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            width: 250px;
+        }
+        
+        .setting-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            background: white;
+            min-width: 180px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #e2e8f0;
+            border-radius: 28px;
+            transition: var(--transition-fast);
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary);
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .permission-card {
+            background: #f8fafc;
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+        }
+        
+        .permission-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .permission-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .permission-icon.villager { background: #dcfce7; color: #16a34a; }
+        .permission-icon.sarpanch { background: #ffedd5; color: #ea580c; }
+        
+        .permission-header h4 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .permission-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .permission-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .backup-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: #dcfce7;
+            border-radius: var(--radius-xl);
+            margin-bottom: 1rem;
+        }
+        
+        .backup-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .backup-info .material-symbols-outlined {
+            font-size: 2rem;
+            color: #16a34a;
+        }
+        
+        .backup-info strong {
+            display: block;
+            font-weight: 700;
+        }
+        
+        .backup-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .btn-backup {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .sidebar-logout-btn {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1024px) {
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            
+            .settings-nav-item {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</body>
+</html>

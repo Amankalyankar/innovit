@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Registry | GRAM-SABHA Admin</title>
+    <meta name="description" content="Manage all registered villages in the district">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Admin Console</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="admin-panel.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Overview</span>
+                </a>
+                <a href="user-management.html" class="nav-item">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>User Management</span>
+                </a>
+                <a href="village-registry.html" class="nav-item active">
+                    <span class="material-symbols-outlined">location_city</span>
+                    <span>Village Registry</span>
+                </a>
+                <a href="security-audit.html" class="nav-item">
+                    <span class="material-symbols-outlined">shield</span>
+                    <span>Security & Audit</span>
+                </a>
+                <a href="system-settings.html" class="nav-item">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>System Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">PS</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Priya Sharma</p>
+                        <p class="sidebar-user-role">System Administrator</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout-btn">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>Village Registry</h2>
+                    <p>156 villages in Jaipur District</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <span class="material-symbols-outlined">search</span>
+                        <input type="text" placeholder="Search villages...">
+                    </div>
+                    <button class="btn-primary">
+                        <span class="material-symbols-outlined">add_location</span>
+                        Add Village
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- District Stats -->
+                <div class="district-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <span class="material-symbols-outlined">location_city</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">156</span>
+                            <span class="stat-label">Total Villages</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <span class="material-symbols-outlined">groups</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">4,52,100</span>
+                            <span class="stat-label">Total Population</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">₹42.8Cr</span>
+                            <span class="stat-label">Total Budget</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <span class="material-symbols-outlined">construction</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">892</span>
+                            <span class="stat-label">Active Projects</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Villages Grid -->
+                <div class="villages-grid">
+                    <!-- Village Card 1 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status active">Active</div>
+                        </div>
+                        <h3>Rampur</h3>
+                        <p class="village-code">Code: RJ-JP-RMP-001</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>4,521 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>892 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Ramesh Kumar (Sarpanch)</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹42.8L</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">8</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">12</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-view" onclick="viewVillage('Rampur')">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Village Card 2 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status active">Active</div>
+                        </div>
+                        <h3>Shyampur</h3>
+                        <p class="village-code">Code: RJ-JP-SYP-002</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>3,245 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>678 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Meera Devi (Sarpanch)</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹38.5L</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">6</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">8</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-view" onclick="viewVillage('Shyampur')">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Village Card 3 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status active">Active</div>
+                        </div>
+                        <h3>Khandela</h3>
+                        <p class="village-code">Code: RJ-JP-KND-003</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>5,892 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>1,234 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Vijay Singh (Sarpanch)</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹52.1L</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">12</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">15</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-view" onclick="viewVillage('Khandela')">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Village Card 4 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status active">Active</div>
+                        </div>
+                        <h3>Sanganer</h3>
+                        <p class="village-code">Code: RJ-JP-SGN-004</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>6,789 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>1,456 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Anil Kumar (Sarpanch)</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹58.3L</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">14</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">9</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-view" onclick="viewVillage('Sanganer')">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Village Card 5 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status pending">Pending Setup</div>
+                        </div>
+                        <h3>Chomu</h3>
+                        <p class="village-code">Code: RJ-JP-CHM-005</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>4,123 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>856 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Not Assigned</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹0</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">0</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">0</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-setup" onclick="setupVillage('Chomu')">Complete Setup</button>
+                        </div>
+                    </div>
+
+                    <!-- Village Card 6 -->
+                    <div class="village-card">
+                        <div class="village-header">
+                            <div class="village-icon">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div class="village-status active">Active</div>
+                        </div>
+                        <h3>Phagi</h3>
+                        <p class="village-code">Code: RJ-JP-PHG-006</p>
+                        <div class="village-info">
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">groups</span>
+                                <span>3,567 population</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>745 households</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <span>Sunita Devi (Sarpanch)</span>
+                            </div>
+                        </div>
+                        <div class="village-stats">
+                            <div class="stat">
+                                <span class="value">₹35.2L</span>
+                                <span class="label">Budget</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">5</span>
+                                <span class="label">Projects</span>
+                            </div>
+                            <div class="stat">
+                                <span class="value">7</span>
+                                <span class="label">Issues</span>
+                            </div>
+                        </div>
+                        <div class="village-actions">
+                            <button class="btn-view" onclick="viewVillage('Phagi')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="page-btn"><span class="material-symbols-outlined">chevron_left</span></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <span class="page-dots">...</span>
+                    <button class="page-btn">26</button>
+                    <button class="page-btn"><span class="material-symbols-outlined">chevron_right</span></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['admin']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+        });
+        
+        function viewVillage(name) {
+            GramSabha.showNotification(`📍 Loading ${name} details...`, 'info');
+        }
+        
+        function setupVillage(name) {
+            GramSabha.showNotification(`⚙️ Starting setup wizard for ${name}...`, 'info');
+        }
+    </script>
+    <style>
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-lg);
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+        
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .district-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.blue { background: #dbeafe; color: #2563eb; }
+        .stat-icon.purple { background: #f3e8ff; color: #7c3aed; }
+        .stat-icon.orange { background: #ffedd5; color: #ea580c; }
+        
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .villages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .village-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .village-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .village-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .village-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .village-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .village-status.active { background: #dcfce7; color: #16a34a; }
+        .village-status.pending { background: #fef3c7; color: #d97706; }
+        
+        .village-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        
+        .village-code {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        
+        .village-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .info-row .material-symbols-outlined {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .village-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .village-stats .stat {
+            text-align: center;
+        }
+        
+        .village-stats .value {
+            display: block;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .village-stats .label {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .village-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-view, .btn-setup {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-align: center;
+            transition: var(--transition-fast);
+        }
+        
+        .btn-view {
+            background: #f1f5f9;
+            color: var(--text-secondary);
+        }
+        
+        .btn-view:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-setup {
+            background: #7c3aed;
+            color: white;
+        }
+        
+        .btn-setup:hover {
+            background: #6d28d9;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-lg);
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition-fast);
+        }
+        
+        .page-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .page-dots {
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            color: var(--text-muted);
+        }
+        
+        .sidebar-logout-btn {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1200px) {
+            .district-stats { grid-template-columns: repeat(2, 1fr); }
+            .villages-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .district-stats { grid-template-columns: 1fr; }
+            .villages-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</body>
+</html>

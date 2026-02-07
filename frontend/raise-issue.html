@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Issue | GRAM-SABHA</title>
+    <meta name="description" content="Report community issues to your local village authorities">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Issue Reporting Specific Styles */
+        .issue-container {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Left Panel */
+        .issue-left {
+            width: 420px;
+            flex-shrink: 0;
+            background: #0f172a;
+            color: var(--white);
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .issue-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 4rem;
+        }
+
+        .issue-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .issue-logo-text h1 {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .issue-logo-text p {
+            font-size: 0.625rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .steps-container {
+            flex: 1;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-indicator.active .step-number {
+            background: var(--primary);
+        }
+
+        .step-indicator.completed .step-number {
+            background: #22c55e;
+        }
+
+        .step-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .step-indicator.active .step-info h3,
+        .step-indicator.completed .step-info h3 {
+            color: var(--white);
+        }
+
+        .step-info p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            margin-top: 0.25rem;
+        }
+
+        .step-indicator.active .step-info p,
+        .step-indicator.completed .step-info p {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .support-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .support-card h4 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .support-card p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .support-phone {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Right Panel */
+        .issue-right {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--text-primary);
+        }
+
+        .issue-lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-chip {
+            padding: 0.375rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+        }
+
+        .lang-chip.active {
+            background: #f0fdf4;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-section {
+            flex: 1;
+            max-width: 700px;
+        }
+
+        .form-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-section > p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Category Grid */
+        .category-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .category-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 2rem 1rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-option:hover {
+            border-color: var(--primary);
+        }
+
+        .category-option.selected {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .category-option .material-symbols-outlined {
+            font-size: 2rem;
+            color: #64748b;
+        }
+
+        .category-option.selected .material-symbols-outlined {
+            color: var(--primary);
+        }
+
+        .category-option span:last-child {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        /* Location Section */
+        .location-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .location-section label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .location-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: var(--radius-xl);
+        }
+
+        .location-box .material-symbols-outlined {
+            font-size: 1.75rem;
+            color: var(--primary);
+        }
+
+        .location-text strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .location-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .location-box button {
+            margin-left: auto;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            transition: var(--transition-fast);
+        }
+
+        .location-box button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Media Upload */
+        .media-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .media-grid {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .media-btn {
+            flex: 1;
+            padding: 2rem;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .media-btn:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .media-btn .material-symbols-outlined {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+        }
+
+        .media-btn:hover .material-symbols-outlined {
+            color: var(--primary);
+        }
+
+        .media-btn span:nth-child(2) {
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .media-btn span:nth-child(3) {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Description */
+        .description-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .description-section label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .description-section textarea {
+            width: 100%;
+            padding: 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-xl);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .description-section textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .description-section textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Anonymous Toggle */
+        .anonymous-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: #fff7ed;
+            border: 2px solid #fed7aa;
+            border-radius: var(--radius-xl);
+            margin-bottom: 2.5rem;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: var(--radius-full);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active {
+            background: #f97316;
+        }
+
+        .toggle-dot {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active .toggle-dot {
+            left: 22px;
+        }
+
+        .toggle-text strong {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .toggle-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 1.125rem;
+            font-weight: 700;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 20px 40px -10px rgba(22, 163, 74, 0.4);
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .issue-left {
+                display: none;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .issue-right {
+                padding: 1.5rem;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .media-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="issue-container">
+        <!-- Left Sidebar -->
+        <aside class="issue-left">
+            <a href="index.html" class="issue-logo">
+                <div class="issue-logo-icon">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div class="issue-logo-text">
+                    <h1>GRAM-SABHA</h1>
+                    <p>Community Portal</p>
+                </div>
+            </a>
+
+            <div class="steps-container">
+                <div class="step-indicator completed">
+                    <div class="step-number">
+                        <span class="material-symbols-outlined">check</span>
+                    </div>
+                    <div class="step-info">
+                        <h3>Select Category</h3>
+                        <p>Choose issue type</p>
+                    </div>
+                </div>
+
+                <div class="step-indicator active">
+                    <div class="step-number">2</div>
+                    <div class="step-info">
+                        <h3>Add Details</h3>
+                        <p>Location, photos, description</p>
+                    </div>
+                </div>
+
+                <div class="step-indicator">
+                    <div class="step-number">3</div>
+                    <div class="step-info">
+                        <h3>Review & Submit</h3>
+                        <p>Confirm and track issue</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="support-card">
+                <h4>Need help reporting?</h4>
+                <p>Call our toll-free helpline</p>
+                <div class="support-phone">
+                    <span class="material-symbols-outlined">call</span>
+                    <span>1800-111-2222</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="issue-right">
+            <div class="issue-header">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>/</span>
+                    <a href="villager-dashboard.html">Dashboard</a>
+                    <span>/</span>
+                    <span>Report Issue</span>
+                </nav>
+                <div class="issue-lang-toggle">
+                    <button class="lang-chip active">English</button>
+                    <button class="lang-chip">हिन्दी</button>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>What's the Issue?</h2>
+                <p>Select a category and tell us what's happening in your area.</p>
+
+                <p class="category-label">Choose Category</p>
+                <div class="category-grid">
+                    <button class="category-option selected">
+                        <span class="material-symbols-outlined">water_drop</span>
+                        <span>Water Supply</span>
+                    </button>
+                    <button class="category-option">
+                        <span class="material-symbols-outlined">add_road</span>
+                        <span>Roads & Paths</span>
+                    </button>
+                    <button class="category-option">
+                        <span class="material-symbols-outlined">electric_bolt</span>
+                        <span>Electricity</span>
+                    </button>
+                    <button class="category-option">
+                        <span class="material-symbols-outlined">delete_sweep</span>
+                        <span>Sanitation</span>
+                    </button>
+                    <button class="category-option">
+                        <span class="material-symbols-outlined">school</span>
+                        <span>Education</span>
+                    </button>
+                    <button class="category-option">
+                        <span class="material-symbols-outlined">more_horiz</span>
+                        <span>Other</span>
+                    </button>
+                </div>
+
+                <div class="location-section">
+                    <label>Issue Location</label>
+                    <div class="location-box">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <div class="location-text">
+                            <strong>Near Hanuman Temple, Ward 4</strong>
+                            <span>Auto-detected via GPS</span>
+                        </div>
+                        <button>Change Location</button>
+                    </div>
+                </div>
+
+                <div class="media-section">
+                    <label class="category-label">Add Photos or Videos (Optional)</label>
+                    <div class="media-grid">
+                        <button class="media-btn">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                            <span>Take Photo</span>
+                            <span>or upload from gallery</span>
+                        </button>
+                        <button class="media-btn">
+                            <span class="material-symbols-outlined">videocam</span>
+                            <span>Record Video</span>
+                            <span>max 30 seconds</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="description-section">
+                    <label>Brief Description</label>
+                    <textarea rows="4" placeholder="Describe the issue in your own words. You can write in Hindi or English..."></textarea>
+                </div>
+
+                <div class="anonymous-toggle">
+                    <div class="toggle-switch" onclick="this.classList.toggle('active')">
+                        <div class="toggle-dot"></div>
+                    </div>
+                    <div class="toggle-text">
+                        <strong>Report Anonymously</strong>
+                        <span>Your identity will remain hidden from everyone.</span>
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="showNotification('Issue submitted successfully! Track ID: GS-2024-4521', 'success')">
+                    <span class="material-symbols-outlined">send</span>
+                    Submit Issue Report
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Category selection
+        document.querySelectorAll('.category-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-option').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

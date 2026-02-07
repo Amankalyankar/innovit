@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarpanch Portal | GRAM-SABHA</title>
+    <meta name="description" content="Administrative portal for village Sarpanch - manage projects, budgets, and approvals">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Sarpanch Portal</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    <span>Pending Approvals</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-symbols-outlined">construction</span>
+                    <span>Active Projects</span>
+                </a>
+                <a href="public-ledger.html" class="nav-item">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span>Budget & Funds</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-symbols-outlined">campaign</span>
+                    <span>Community Issues</span>
+                    <span class="nav-badge warning">12</span>
+                </a>
+                <a href="contractor-verification.html" class="nav-item">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Work Verification</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span>Contractors</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar">RK</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Ramesh Kumar</p>
+                        <p class="sidebar-user-role">Sarpanch • Rampur</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2 id="greetingText">Good Morning, Ramesh!</h2>
+                    <p id="dateText">Friday, 7 February 2024</p>
+                </div>
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="header-badge">
+                        <span class="badge-label" id="villageBadge">Rampur Village</span>
+                        <span class="badge-id">Panchayat Code: RJ-JP-RMP-001</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Quick Stats -->
+                <div class="stats-row">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">pending_actions</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">Pending Approvals</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <span class="material-symbols-outlined">construction</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">8</span>
+                            <span class="stat-label">Active Projects</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <span class="material-symbols-outlined">campaign</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Open Issues</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <span class="material-symbols-outlined">savings</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="budgetValue">₹42.8L</span>
+                            <span class="stat-label">Total Budget</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Approvals -->
+                <section class="focus-section">
+                    <div class="focus-header">
+                        <h3>
+                            <span class="material-symbols-outlined">priority_high</span>
+                            Requires Your Attention
+                        </h3>
+                        <span class="focus-count">5 items pending</span>
+                    </div>
+                    <div class="focus-cards">
+                        <div class="focus-card urgent">
+                            <div class="focus-card-header">
+                                <span class="focus-type">Fund Release</span>
+                                <span class="focus-priority urgent">Urgent</span>
+                            </div>
+                            <h4>Water Pipeline - Phase 2 Payment</h4>
+                            <p>₹85,000 requested by Sharma Constructions</p>
+                            <div class="focus-actions">
+                                <button class="btn-approve" onclick="approveRequest(this, 'Fund release approved!')">
+                                    <span class="material-symbols-outlined">check</span>
+                                    Approve
+                                </button>
+                                <button class="btn-reject" onclick="rejectRequest(this, 'Fund release rejected')">
+                                    <span class="material-symbols-outlined">close</span>
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                        <div class="focus-card">
+                            <div class="focus-card-header">
+                                <span class="focus-type">Work Verification</span>
+                                <span class="focus-priority normal">Normal</span>
+                            </div>
+                            <h4>School Boundary Wall - Final Check</h4>
+                            <p>Community sign-off required for project closure</p>
+                            <div class="focus-actions">
+                                <button class="btn-review" onclick="window.location.href='contractor-verification.html'">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                    Review
+                                </button>
+                            </div>
+                        </div>
+                        <div class="focus-card">
+                            <div class="focus-card-header">
+                                <span class="focus-type">Issue Escalation</span>
+                                <span class="focus-priority high">High</span>
+                            </div>
+                            <h4>Broken Hand Pump - Ward 4</h4>
+                            <p>142 villagers have voted for priority resolution</p>
+                            <div class="focus-actions">
+                                <button class="btn-assign" onclick="GramSabha.showNotification('Issue assigned to Water Department', 'success')">
+                                    <span class="material-symbols-outlined">assignment_ind</span>
+                                    Assign
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Budget Overview -->
+                <section class="budget-section">
+                    <div class="budget-header">
+                        <h3>Budget Status - FY 2024-25</h3>
+                        <a href="public-ledger.html" class="view-all-link">View Full Ledger →</a>
+                    </div>
+                    <div class="budget-grid">
+                        <div class="budget-card main">
+                            <div class="budget-ring">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#16a34a" stroke-width="8" 
+                                            stroke-dasharray="200.96" stroke-dashoffset="60.29" transform="rotate(-90 50 50)"/>
+                                </svg>
+                                <div class="ring-center">
+                                    <span class="ring-value">70%</span>
+                                    <span class="ring-label">Utilized</span>
+                                </div>
+                            </div>
+                            <div class="budget-details">
+                                <div class="budget-row">
+                                    <span class="budget-label">Total Received</span>
+                                    <span class="budget-value">₹42,80,000</span>
+                                </div>
+                                <div class="budget-row">
+                                    <span class="budget-label">Spent</span>
+                                    <span class="budget-value spent">₹30,00,000</span>
+                                </div>
+                                <div class="budget-row">
+                                    <span class="budget-label">Committed</span>
+                                    <span class="budget-value committed">₹8,25,000</span>
+                                </div>
+                                <div class="budget-row highlight">
+                                    <span class="budget-label">Available</span>
+                                    <span class="budget-value available">₹4,55,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="budget-breakdown">
+                            <h4>Spending by Category</h4>
+                            <div class="breakdown-list">
+                                <div class="breakdown-item">
+                                    <div class="breakdown-info">
+                                        <span class="breakdown-color" style="background: #0ea5e9;"></span>
+                                        <span>Water Supply</span>
+                                    </div>
+                                    <span class="breakdown-value">₹12,50,000</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-info">
+                                        <span class="breakdown-color" style="background: #f59e0b;"></span>
+                                        <span>Roads & Paths</span>
+                                    </div>
+                                    <span class="breakdown-value">₹8,75,000</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-info">
+                                        <span class="breakdown-color" style="background: #8b5cf6;"></span>
+                                        <span>Education</span>
+                                    </div>
+                                    <span class="breakdown-value">₹5,25,000</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-info">
+                                        <span class="breakdown-color" style="background: #22c55e;"></span>
+                                        <span>Sanitation</span>
+                                    </div>
+                                    <span class="breakdown-value">₹3,50,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Active Projects -->
+                <section class="projects-section">
+                    <div class="section-header">
+                        <h3>Active Projects</h3>
+                        <button class="btn-new-project">
+                            <span class="material-symbols-outlined">add</span>
+                            New Project
+                        </button>
+                    </div>
+                    <div class="projects-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Contractor</th>
+                                    <th>Budget</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="project-cell">
+                                            <span class="project-icon water">💧</span>
+                                            <div>
+                                                <strong>Water Pipeline - Ward 4</strong>
+                                                <span>PRJ-2024-1089</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Sharma Constructions</td>
+                                    <td>₹3,50,000</td>
+                                    <td>
+                                        <div class="progress-cell">
+                                            <div class="mini-progress">
+                                                <div class="mini-fill" style="width: 72%;"></div>
+                                            </div>
+                                            <span>72%</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-pill in-progress">In Progress</span></td>
+                                    <td>
+                                        <button class="table-action" onclick="window.location.href='contractor-verification.html'">
+                                            <span class="material-symbols-outlined">visibility</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="project-cell">
+                                            <span class="project-icon roads">🛤️</span>
+                                            <div>
+                                                <strong>School Road Repair</strong>
+                                                <span>PRJ-2024-0956</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Gupta Contractors</td>
+                                    <td>₹2,25,000</td>
+                                    <td>
+                                        <div class="progress-cell">
+                                            <div class="mini-progress">
+                                                <div class="mini-fill" style="width: 45%;"></div>
+                                            </div>
+                                            <span>45%</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-pill in-progress">In Progress</span></td>
+                                    <td>
+                                        <button class="table-action">
+                                            <span class="material-symbols-outlined">visibility</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="project-cell">
+                                            <span class="project-icon education">🏫</span>
+                                            <div>
+                                                <strong>School Boundary Wall</strong>
+                                                <span>PRJ-2024-0892</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Devi Construction</td>
+                                    <td>₹1,85,000</td>
+                                    <td>
+                                        <div class="progress-cell">
+                                            <div class="mini-progress complete">
+                                                <div class="mini-fill" style="width: 100%;"></div>
+                                            </div>
+                                            <span>100%</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-pill verification">Awaiting Verification</span></td>
+                                    <td>
+                                        <button class="table-action" onclick="window.location.href='contractor-verification.html'">
+                                            <span class="material-symbols-outlined">verified</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['sarpanch']);
+            if (!user) return;
+            
+            // Update user info
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+            
+            // Update greeting
+            const greeting = GramSabha.getGreeting();
+            document.getElementById('greetingText').textContent = `${greeting}, ${user.name.split(' ')[0]}!`;
+            
+            // Update date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateText').textContent = new Date().toLocaleDateString('en-IN', options);
+            
+            // Update village badge
+            document.getElementById('villageBadge').textContent = `${GramSabha.VILLAGE_DATA.name} Village`;
+        });
+        
+        function approveRequest(btn, message) {
+            const card = btn.closest('.focus-card');
+            card.style.opacity = '0.5';
+            card.style.pointerEvents = 'none';
+            GramSabha.showNotification(message, 'success');
+        }
+        
+        function rejectRequest(btn, message) {
+            const card = btn.closest('.focus-card');
+            card.style.opacity = '0.5';
+            card.style.pointerEvents = 'none';
+            GramSabha.showNotification(message, 'error');
+        }
+    </script>
+    <style>
+        /* Additional Sarpanch Portal Styles */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-card.primary {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+        }
+
+        .stat-card.primary .stat-icon {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .stat-card.primary .stat-label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.blue { background: #dbeafe; color: #2563eb; }
+        .stat-icon.orange { background: #ffedd5; color: #ea580c; }
+
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.75rem;
+            font-weight: 900;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Focus Section */
+        .focus-section {
+            background: #fffbeb;
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            border: 2px solid #fde68a;
+        }
+
+        .focus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .focus-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        .focus-count {
+            font-size: 0.875rem;
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        .focus-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .focus-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .focus-card.urgent {
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        .focus-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .focus-type {
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .focus-priority {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius);
+            font-size: 0.625rem;
+            font-weight: 700;
+        }
+
+        .focus-priority.urgent { background: #fee2e2; color: #dc2626; }
+        .focus-priority.high { background: #fef3c7; color: #d97706; }
+        .focus-priority.normal { background: #e2e8f0; color: #64748b; }
+
+        .focus-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .focus-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .focus-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-approve, .btn-reject, .btn-review, .btn-assign {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: var(--transition-fast);
+        }
+
+        .btn-approve { background: #16a34a; color: white; }
+        .btn-approve:hover { background: #15803d; }
+        .btn-reject { background: #e2e8f0; color: var(--text-secondary); }
+        .btn-reject:hover { background: #dc2626; color: white; }
+        .btn-review { background: #2563eb; color: white; }
+        .btn-assign { background: #7c3aed; color: white; }
+
+        /* Budget Section */
+        .budget-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .budget-header h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .view-all-link {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .budget-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .budget-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .budget-card.main {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .budget-ring {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+        }
+
+        .budget-ring svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ring-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ring-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .ring-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .budget-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .budget-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .budget-row.highlight {
+            background: #f0fdf4;
+            margin: 0 -1rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+        }
+
+        .budget-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .budget-value {
+            font-weight: 700;
+        }
+
+        .budget-value.spent { color: #dc2626; }
+        .budget-value.committed { color: #d97706; }
+        .budget-value.available { color: #16a34a; }
+
+        .budget-breakdown {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .budget-breakdown h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .breakdown-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breakdown-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .breakdown-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .breakdown-value {
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        /* Projects Table */
+        .projects-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .btn-new-project {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+
+        .projects-table {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .projects-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .projects-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: #f8fafc;
+        }
+
+        .projects-table td {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .project-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .project-icon {
+            font-size: 1.25rem;
+        }
+
+        .project-cell div strong {
+            display: block;
+            font-size: 0.875rem;
+        }
+
+        .project-cell div span {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+
+        .progress-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mini-progress {
+            width: 60px;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .mini-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+
+        .mini-progress.complete .mini-fill {
+            background: #22c55e;
+        }
+
+        .status-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 600;
+        }
+
+        .status-pill.in-progress { background: #dbeafe; color: #1e40af; }
+        .status-pill.verification { background: #fef3c7; color: #92400e; }
+
+        .table-action {
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .table-action:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        /* Sidebar Logout Button */
+        .sidebar-logout {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+
+        .sidebar-logout:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .focus-cards {
+                grid-template-columns: 1fr;
+            }
+            .budget-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>

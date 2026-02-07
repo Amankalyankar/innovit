@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | GRAM-SABHA Admin</title>
+    <meta name="description" content="Manage system users across all villages">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Admin Console</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="admin-panel.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Overview</span>
+                </a>
+                <a href="user-management.html" class="nav-item active">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>User Management</span>
+                </a>
+                <a href="village-registry.html" class="nav-item">
+                    <span class="material-symbols-outlined">location_city</span>
+                    <span>Village Registry</span>
+                </a>
+                <a href="security-audit.html" class="nav-item">
+                    <span class="material-symbols-outlined">shield</span>
+                    <span>Security & Audit</span>
+                </a>
+                <a href="system-settings.html" class="nav-item">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>System Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">PS</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Priya Sharma</p>
+                        <p class="sidebar-user-role">System Administrator</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout-btn">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>User Management</h2>
+                    <p>Manage all users across 156 villages</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <span class="material-symbols-outlined">search</span>
+                        <input type="text" placeholder="Search users by name, ID, or village...">
+                    </div>
+                    <button class="btn-primary">
+                        <span class="material-symbols-outlined">person_add</span>
+                        Add User
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- User Stats -->
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <span class="material-symbols-outlined">groups</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">12,450</span>
+                            <span class="stat-label">Total Users</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">11,892</span>
+                            <span class="stat-label">Villagers</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <span class="material-symbols-outlined">gavel</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">156</span>
+                            <span class="stat-label">Sarpanches</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <span class="material-symbols-outlined">verified_user</span>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">98.2%</span>
+                            <span class="stat-label">Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active">All Users</button>
+                    <button class="filter-tab">Villagers</button>
+                    <button class="filter-tab">Sarpanches</button>
+                    <button class="filter-tab">Admins</button>
+                    <button class="filter-tab">Pending Verification</button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Village</th>
+                                <th>Registered</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">RK</div>
+                                        <div class="user-details">
+                                            <strong>Ravi Kumar</strong>
+                                            <span>ID: VLG-2024-0001</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge villager">Villager</span></td>
+                                <td>Rampur</td>
+                                <td>Feb 5, 2024</td>
+                                <td><span class="status-badge verified">Verified</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn" title="View"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="icon-btn danger" title="Suspend"><span class="material-symbols-outlined">block</span></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar sarpanch">RK</div>
+                                        <div class="user-details">
+                                            <strong>Ramesh Kumar</strong>
+                                            <span>ID: SAR-2024-0892</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge sarpanch">Sarpanch</span></td>
+                                <td>Rampur</td>
+                                <td>Jan 15, 2024</td>
+                                <td><span class="status-badge verified">Verified</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn" title="View"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="icon-btn danger" title="Suspend"><span class="material-symbols-outlined">block</span></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">KD</div>
+                                        <div class="user-details">
+                                            <strong>Kamla Devi</strong>
+                                            <span>ID: VLG-2024-0045</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge villager">Villager</span></td>
+                                <td>Rampur</td>
+                                <td>Feb 1, 2024</td>
+                                <td><span class="status-badge verified">Verified</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn" title="View"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="icon-btn danger" title="Suspend"><span class="material-symbols-outlined">block</span></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">ML</div>
+                                        <div class="user-details">
+                                            <strong>Mohan Lal</strong>
+                                            <span>ID: VLG-2024-0089</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge villager">Villager</span></td>
+                                <td>Rampur</td>
+                                <td>Jan 28, 2024</td>
+                                <td><span class="status-badge verified">Verified</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn" title="View"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="icon-btn danger" title="Suspend"><span class="material-symbols-outlined">block</span></button>
+                                </td>
+                            </tr>
+                            <tr class="pending-row">
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar pending">SP</div>
+                                        <div class="user-details">
+                                            <strong>Suresh Patel</strong>
+                                            <span>ID: VLG-2024-0156</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge villager">Villager</span></td>
+                                <td>Shyampur</td>
+                                <td>Feb 6, 2024</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn success" title="Verify"><span class="material-symbols-outlined">check</span></button>
+                                    <button class="icon-btn danger" title="Reject"><span class="material-symbols-outlined">close</span></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar sarpanch">VS</div>
+                                        <div class="user-details">
+                                            <strong>Vijay Singh</strong>
+                                            <span>ID: SAR-2024-0456</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="role-badge sarpanch">Sarpanch</span></td>
+                                <td>Khandela</td>
+                                <td>Jan 10, 2024</td>
+                                <td><span class="status-badge verified">Verified</span></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn" title="View"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="icon-btn danger" title="Suspend"><span class="material-symbols-outlined">block</span></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="page-btn"><span class="material-symbols-outlined">chevron_left</span></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <span class="page-dots">...</span>
+                    <button class="page-btn">156</button>
+                    <button class="page-btn"><span class="material-symbols-outlined">chevron_right</span></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['admin']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+        });
+        
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+    <style>
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-lg);
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            width: 280px;
+        }
+        
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+        }
+        
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.blue { background: #dbeafe; color: #2563eb; }
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.orange { background: #ffedd5; color: #ea580c; }
+        .stat-icon.purple { background: #f3e8ff; color: #7c3aed; }
+        
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            background: #f1f5f9;
+            transition: var(--transition-fast);
+        }
+        
+        .filter-tab:hover {
+            background: #e2e8f0;
+        }
+        
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .users-table-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .users-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: #f8fafc;
+        }
+        
+        .users-table td {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .users-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .users-table tr.pending-row {
+            background: #fef3c7;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        
+        .user-avatar.sarpanch {
+            background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+        }
+        
+        .user-avatar.pending {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-details strong {
+            font-weight: 700;
+        }
+        
+        .user-details span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .role-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .role-badge.villager { background: #dcfce7; color: #16a34a; }
+        .role-badge.sarpanch { background: #ffedd5; color: #ea580c; }
+        .role-badge.admin { background: #f3e8ff; color: #7c3aed; }
+        
+        .status-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.verified { background: #dcfce7; color: #16a34a; }
+        .status-badge.pending { background: #fef3c7; color: #d97706; }
+        
+        .action-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+        
+        .icon-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .icon-btn.danger:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .icon-btn.success:hover {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .icon-btn .material-symbols-outlined {
+            font-size: 1rem;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-lg);
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition-fast);
+        }
+        
+        .page-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .page-dots {
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            color: var(--text-muted);
+        }
+        
+        .sidebar-logout-btn {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1200px) {
+            .user-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Issues | GRAM-SABHA</title>
+    <meta name="description" content="View and manage all community reported issues">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <span class="material-symbols-outlined">account_balance</span>
+                    </div>
+                    <div class="sidebar-logo-text">
+                        <h1>GRAM-SABHA</h1>
+                        <p>Sarpanch Portal</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="sarpanch-portal.html" class="nav-item">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pending-approvals.html" class="nav-item">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    <span>Pending Approvals</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="active-projects.html" class="nav-item">
+                    <span class="material-symbols-outlined">construction</span>
+                    <span>Active Projects</span>
+                </a>
+                <a href="public-ledger.html" class="nav-item">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span>Budget & Funds</span>
+                </a>
+                <a href="community-issues.html" class="nav-item active">
+                    <span class="material-symbols-outlined">campaign</span>
+                    <span>Community Issues</span>
+                    <span class="nav-badge warning">12</span>
+                </a>
+                <a href="contractor-verification.html" class="nav-item">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Work Verification</span>
+                </a>
+                <a href="contractors.html" class="nav-item">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span>Contractors</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="sidebarAvatar">RK</div>
+                    <div class="sidebar-user-info">
+                        <p class="sidebar-user-name" id="sidebarUserName">Ramesh Kumar</p>
+                        <p class="sidebar-user-role">Sarpanch • Rampur</p>
+                    </div>
+                    <button onclick="GramSabha.logout()" class="sidebar-logout">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h2>Community Issues</h2>
+                    <p>12 open issues reported by villagers</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-filter">
+                        <span class="material-symbols-outlined">search</span>
+                        <input type="text" placeholder="Search issues...">
+                    </div>
+                    <select class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="water">Water Supply</option>
+                        <option value="roads">Roads & Paths</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="sanitation">Sanitation</option>
+                        <option value="education">Education</option>
+                    </select>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Issues Stats -->
+                <div class="issues-stats">
+                    <div class="stat-pill urgent">
+                        <span class="material-symbols-outlined">priority_high</span>
+                        <span>3 Urgent</span>
+                    </div>
+                    <div class="stat-pill high">
+                        <span class="material-symbols-outlined">arrow_upward</span>
+                        <span>4 High Priority</span>
+                    </div>
+                    <div class="stat-pill normal">
+                        <span class="material-symbols-outlined">remove</span>
+                        <span>5 Normal</span>
+                    </div>
+                </div>
+
+                <!-- Issues Table -->
+                <div class="issues-table-container">
+                    <table class="issues-table">
+                        <thead>
+                            <tr>
+                                <th>Issue</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Votes</th>
+                                <th>Status</th>
+                                <th>Reported</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="urgent-row">
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Broken Hand Pump - Ward 4</strong>
+                                        <span>50 families affected, no drinking water</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge water">💧 Water</span></td>
+                                <td>Near Hanuman Temple</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>142</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge urgent">Urgent</span></td>
+                                <td>Feb 5, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Broken Hand Pump')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="urgent-row">
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Road Flooded After Rain</strong>
+                                        <span>Main road to market impassable</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge roads">🛤️ Roads</span></td>
+                                <td>Market Road, Ward 1</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>98</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge urgent">Urgent</span></td>
+                                <td>Feb 6, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Road Flooded')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Street Lights Not Working</strong>
+                                        <span>5 lights on main road broken for 2 weeks</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge electricity">⚡ Electricity</span></td>
+                                <td>Main Road, Ward 2</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>89</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge high">High</span></td>
+                                <td>Jan 28, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Street Lights')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Garbage Not Collected</strong>
+                                        <span>Collection stopped for 1 week</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge sanitation">🗑️ Sanitation</span></td>
+                                <td>Ward 3</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>76</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge high">High</span></td>
+                                <td>Feb 1, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Garbage')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>School Roof Leaking</strong>
+                                        <span>Rain water entering classroom</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge education">🏫 Education</span></td>
+                                <td>Primary School</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>65</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge in-progress">In Progress</span></td>
+                                <td>Jan 20, 2024</td>
+                                <td>
+                                    <button class="action-btn-small viewing" onclick="viewIssue('School Roof')">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Pothole Near Bus Stand</strong>
+                                        <span>Dangerous for vehicles</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge roads">🛤️ Roads</span></td>
+                                <td>Bus Stand Area</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>54</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge normal">Open</span></td>
+                                <td>Feb 3, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Pothole')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="issue-info">
+                                        <strong>Water Pipe Leakage</strong>
+                                        <span>Water wastage near temple</span>
+                                    </div>
+                                </td>
+                                <td><span class="category-badge water">💧 Water</span></td>
+                                <td>Temple Road, Ward 4</td>
+                                <td>
+                                    <div class="votes-cell">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>45</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge normal">Open</span></td>
+                                <td>Feb 4, 2024</td>
+                                <td>
+                                    <button class="action-btn-small" onclick="assignIssue('Pipe Leakage')">
+                                        <span class="material-symbols-outlined">assignment_ind</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = GramSabha.requireAuth(['sarpanch']);
+            if (!user) return;
+            
+            document.getElementById('sidebarUserName').textContent = user.name;
+            document.getElementById('sidebarAvatar').textContent = user.avatar;
+        });
+        
+        function assignIssue(name) {
+            GramSabha.showNotification(`📋 Opening contractor assignment for: ${name}`, 'info');
+            setTimeout(() => {
+                window.location.href = 'contractors.html';
+            }, 1000);
+        }
+        
+        function viewIssue(name) {
+            GramSabha.showNotification(`👁️ Viewing details for: ${name}`, 'info');
+        }
+    </script>
+    <style>
+        .search-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--radius-lg);
+        }
+        
+        .search-filter input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            background: var(--white);
+        }
+        
+        .issues-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .stat-pill.urgent { background: #fee2e2; color: #dc2626; }
+        .stat-pill.high { background: #fef3c7; color: #d97706; }
+        .stat-pill.normal { background: #e2e8f0; color: #64748b; }
+        
+        .issues-table-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .issues-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .issues-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: #f8fafc;
+        }
+        
+        .issues-table td {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .issues-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .issues-table tr.urgent-row {
+            background: #fef2f2;
+        }
+        
+        .issues-table tr.urgent-row:hover {
+            background: #fee2e2;
+        }
+        
+        .issue-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .issue-info strong {
+            font-weight: 700;
+        }
+        
+        .issue-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .category-badge.water { background: #e0f2fe; }
+        .category-badge.roads { background: #fef3c7; }
+        .category-badge.electricity { background: #fef9c3; }
+        .category-badge.sanitation { background: #dcfce7; }
+        .category-badge.education { background: #f3e8ff; }
+        
+        .votes-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .votes-cell .material-symbols-outlined {
+            font-size: 1rem;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.urgent { background: #fee2e2; color: #dc2626; }
+        .status-badge.high { background: #fef3c7; color: #d97706; }
+        .status-badge.normal { background: #e2e8f0; color: #64748b; }
+        .status-badge.in-progress { background: #dbeafe; color: #1e40af; }
+        
+        .action-btn-small {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+        
+        .action-btn-small:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .action-btn-small.viewing {
+            background: #2563eb;
+        }
+        
+        .sidebar-logout {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            transition: var(--transition-fast);
+            margin-left: auto;
+        }
+        
+        .sidebar-logout:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        @media (max-width: 1024px) {
+            .issues-table th:nth-child(3),
+            .issues-table td:nth-child(3),
+            .issues-table th:nth-child(6),
+            .issues-table td:nth-child(6) {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>

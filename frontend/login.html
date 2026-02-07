@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | GRAM-SABHA</title>
+    <meta name="description" content="Secure login to GRAM-SABHA Digital Village Governance Platform">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Login Page Styles */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Left Panel - Branding */
+        .login-branding {
+            width: 45%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--white);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-branding::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.1) 0%, transparent 70%);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-logo-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(22, 163, 74, 0.3);
+        }
+
+        .brand-logo-icon .material-symbols-outlined {
+            font-size: 2rem;
+        }
+
+        .brand-logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo-text p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .brand-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-content h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-content h2 span {
+            color: var(--primary);
+        }
+
+        .brand-content p {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .brand-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .feature-item .material-symbols-outlined {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .feature-item span {
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .govt-badges {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .govt-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Right Panel - Login Form */
+        .login-form-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            background: var(--white);
+        }
+
+        .login-form-container {
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .login-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .login-header h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Login Methods */
+        .login-methods {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: #f1f5f9;
+            padding: 0.25rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .login-method-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .login-method-btn.active {
+            background: var(--white);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-lg);
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+
+        .form-input:focus + .form-icon,
+        .form-input:not(:placeholder-shown) + .form-icon {
+            color: var(--primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .form-error {
+            display: none;
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 0.5rem;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        /* Demo Credentials */
+        .demo-credentials {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-lg);
+        }
+
+        .demo-credentials h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .demo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .demo-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .demo-item-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-item-left .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        .demo-item-left strong {
+            font-size: 0.75rem;
+        }
+
+        .demo-item-right {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .demo-item.villager .material-symbols-outlined { color: #16a34a; }
+        .demo-item.sarpanch .material-symbols-outlined { color: #d97706; }
+        .demo-item.admin .material-symbols-outlined { color: #7c3aed; }
+        .demo-item.csc .material-symbols-outlined { color: #2563eb; }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            background: var(--primary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px -5px rgba(22, 163, 74, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading span {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Biometric Option */
+        .biometric-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .biometric-divider::before,
+        .biometric-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .biometric-btn {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .biometric-btn:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .biometric-btn .material-symbols-outlined {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* Help Link */
+        .help-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .help-section p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .help-section a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Role Detection Card */
+        .role-detection {
+            display: none;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .role-detection.show {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .role-detection.villager {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+        }
+
+        .role-detection.sarpanch {
+            background: #fffbeb;
+            border: 2px solid #fcd34d;
+        }
+
+        .role-detection.admin {
+            background: #faf5ff;
+            border: 2px solid #d8b4fe;
+        }
+
+        .role-detection.csc {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+        }
+
+        .role-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .role-detection.villager .role-icon {
+            background: #16a34a;
+            color: var(--white);
+        }
+
+        .role-detection.sarpanch .role-icon {
+            background: #d97706;
+            color: var(--white);
+        }
+
+        .role-detection.admin .role-icon {
+            background: #7c3aed;
+            color: var(--white);
+        }
+
+        .role-detection.csc .role-icon {
+            background: #2563eb;
+            color: var(--white);
+        }
+
+        .role-info h4 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .role-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .login-branding {
+                display: none;
+            }
+
+            .login-form-panel {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form-panel {
+                padding: 1.5rem;
+            }
+
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <!-- Left Panel - Branding -->
+        <aside class="login-branding">
+            <div class="brand-logo">
+                <div class="brand-logo-icon">
+                    <span class="material-symbols-outlined">account_balance</span>
+                </div>
+                <div class="brand-logo-text">
+                    <h1>GRAM-SABHA</h1>
+                    <p>Digital Village Governance</p>
+                </div>
+            </div>
+
+            <div class="brand-content">
+                <h2>Empowering <span>Rural India</span> Through Digital Governance</h2>
+                <p>Access village services, track budgets, report issues, and participate in local governance - all from one platform.</p>
+
+                <div class="brand-features">
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">verified_user</span>
+                        <span>Aadhaar Verified & Secure</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">visibility</span>
+                        <span>100% Transparent Fund Tracking</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">translate</span>
+                        <span>Available in Hindi & English</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-footer">
+                <div class="govt-badges">
+                    <div class="govt-badge">
+                        <span>🇮🇳</span>
+                        <span>Digital India Initiative</span>
+                    </div>
+                    <div class="govt-badge">
+                        <span>🏛️</span>
+                        <span>Ministry of Rural Development</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Panel - Login Form -->
+        <main class="login-form-panel">
+            <div class="login-form-container">
+                <a href="index.html" class="back-link">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Back to Home
+                </a>
+
+                <div class="login-header">
+                    <h2>Welcome Back 👋</h2>
+                    <p>Enter your credentials to access your dashboard</p>
+                </div>
+
+                <!-- Login Methods Toggle -->
+                <div class="login-methods">
+                    <button class="login-method-btn active" data-method="mobile">Mobile & OTP</button>
+                    <button class="login-method-btn" data-method="aadhaar">Aadhaar ID</button>
+                </div>
+
+                <!-- Demo Credentials -->
+                <div class="demo-credentials">
+                    <h4>
+                        <span class="material-symbols-outlined">science</span>
+                        Demo Accounts (Click to auto-fill)
+                    </h4>
+                    <div class="demo-list">
+                        <div class="demo-item villager" onclick="fillDemo('9876543210', '1234', 'villager')">
+                            <div class="demo-item-left">
+                                <span class="material-symbols-outlined">person</span>
+                                <strong>Villager</strong>
+                            </div>
+                            <div class="demo-item-right">9876543210 / 1234</div>
+                        </div>
+                        <div class="demo-item sarpanch" onclick="fillDemo('9876543211', '1234', 'sarpanch')">
+                            <div class="demo-item-left">
+                                <span class="material-symbols-outlined">gavel</span>
+                                <strong>Sarpanch</strong>
+                            </div>
+                            <div class="demo-item-right">9876543211 / 1234</div>
+                        </div>
+                        <div class="demo-item admin" onclick="fillDemo('9876543212', '1234', 'admin')">
+                            <div class="demo-item-left">
+                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                <strong>Admin</strong>
+                            </div>
+                            <div class="demo-item-right">9876543212 / 1234</div>
+                    </div>
+                </div>
+
+                <!-- Role Detection -->
+                <div class="role-detection" id="roleDetection">
+                    <div class="role-icon">
+                        <span class="material-symbols-outlined" id="roleIcon">person</span>
+                    </div>
+                    <div class="role-info">
+                        <h4 id="roleName">Villager Account</h4>
+                        <p id="roleDesc">You'll be redirected to Villager Dashboard</p>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number / Aadhaar</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="userId" 
+                                placeholder="Enter mobile or Aadhaar number"
+                                maxlength="12"
+                                oninput="detectRole(this.value)"
+                                required
+                            >
+                            <span class="material-symbols-outlined form-icon">phone_android</span>
+                        </div>
+                        <p class="form-error" id="userIdError">Please enter a valid mobile or Aadhaar number</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">OTP / PIN</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="password" 
+                                placeholder="Enter OTP or PIN"
+                                maxlength="6"
+                                required
+                            >
+                            <span class="material-symbols-outlined form-icon">lock</span>
+                            <span class="material-symbols-outlined password-toggle" onclick="togglePassword()">visibility</span>
+                        </div>
+                        <p class="form-error" id="passwordError">Invalid OTP/PIN. Please try again.</p>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <div class="spinner"></div>
+                        <span>Login to Dashboard</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </form>
+
+                <div class="biometric-divider">OR</div>
+
+                <button class="biometric-btn" onclick="handleBiometric()">
+                    <span class="material-symbols-outlined">fingerprint</span>
+                    <span>Login with Fingerprint</span>
+                </button>
+
+                <div class="help-section">
+                    <p>Need help? Call our helpline: <a href="tel:1800-111-2222">1800-111-2222</a></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
