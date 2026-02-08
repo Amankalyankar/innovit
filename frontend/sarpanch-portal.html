@@ -53,7 +53,7 @@
                     <span class="material-symbols-outlined">verified</span>
                     <span>Work Verification</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="contractors.html" class="nav-item">
                     <span class="material-symbols-outlined">groups</span>
                     <span>Contractors</span>
                 </a>
@@ -378,28 +378,30 @@
         </main>
     </div>
 
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
     <script>
-        // Check authentication
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const user = GramSabha.requireAuth(['sarpanch']);
             if (!user) return;
-            
-            // Update user info
-            document.getElementById('sidebarUserName').textContent = user.name;
-            document.getElementById('sidebarAvatar').textContent = user.avatar;
-            
-            // Update greeting
-            const greeting = GramSabha.getGreeting();
-            document.getElementById('greetingText').textContent = `${greeting}, ${user.name.split(' ')[0]}!`;
-            
-            // Update date
+
+            document.getElementById('sidebarUserName').textContent = user.name || '—';
+            document.getElementById('sidebarAvatar').textContent = user.avatar || (user.name || '').split(' ').map(function(n) { return n[0]; }).join('').slice(0, 2).toUpperCase() || '—';
+            document.getElementById('greetingText').textContent = GramSabha.getGreeting() + ', ' + (user.name || '').split(' ')[0] + '!';
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('dateText').textContent = new Date().toLocaleDateString('en-IN', options);
-            
-            // Update village badge
-            document.getElementById('villageBadge').textContent = `${GramSabha.VILLAGE_DATA.name} Village`;
+
+            const villageId = user.villageId || user.village_id;
+            if (villageId) {
+                try {
+                    const village = await GramSabha.getVillage(villageId);
+                    document.getElementById('villageBadge').textContent = (village ? (village.name || '') + ' Village' : '—');
+                } catch (e) {
+                    document.getElementById('villageBadge').textContent = '—';
+                }
+            } else {
+                document.getElementById('villageBadge').textContent = '—';
+            }
         });
         
         function approveRequest(btn, message) {

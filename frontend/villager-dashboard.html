@@ -20,7 +20,7 @@
                 </div>
                 <div class="logo-text">
                     <h1>GRAM-SABHA</h1>
-                    <p id="villageName">रामपुर गांव</p>
+                    <p id="villageName">—</p>
                 </div>
             </a>
         </div>
@@ -36,10 +36,10 @@
                 <span class="notification-badge">3</span>
             </button>
             <div class="user-profile" id="userProfile">
-                <div class="user-avatar" id="userAvatar">RK</div>
+                <div class="user-avatar" id="userAvatar">—</div>
                 <div class="user-info">
-                    <p class="user-name" id="userName">Ravi Kumar</p>
-                    <p class="user-role" id="userRole">Villager</p>
+                    <p class="user-name" id="userName">—</p>
+                    <p class="user-role" id="userRole">—</p>
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <a href="my-profile.html"><span class="material-symbols-outlined">person</span> My Profile</a>
@@ -55,7 +55,7 @@
         <!-- Welcome Section -->
         <section class="welcome-section">
             <div class="welcome-content">
-                <h2 id="welcomeMsg">Good Morning, Ravi! 👋</h2>
+                <h2 id="welcomeMsg">—</h2>
                 <p>Here's what's happening in your village today</p>
             </div>
             <div class="quick-stats">
@@ -235,82 +235,108 @@
         </div>
     </footer>
 
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
     <script>
-        // Check authentication
-        document.addEventListener('DOMContentLoaded', function() {
+        let currentIssues = [];
+        document.addEventListener('DOMContentLoaded', async function() {
             const user = GramSabha.requireAuth(['villager']);
             if (!user) return;
-            
-            // Update user info in header
-            document.getElementById('userName').textContent = user.name;
-            document.getElementById('userRole').textContent = user.roleName;
-            document.getElementById('userAvatar').textContent = user.avatar;
-            document.getElementById('villageName').textContent = GramSabha.VILLAGE_DATA.nameHindi + ' गांव';
-            
-            // Update welcome message
-            const greeting = GramSabha.getGreeting();
-            document.getElementById('welcomeMsg').textContent = `${greeting}, ${user.name.split(' ')[0]}! 👋`;
-            
-            // Update budget stats
-            const budget = GramSabha.BUDGET_DATA;
-            document.getElementById('totalFunds').textContent = GramSabha.formatCurrency(budget.totalReceived);
-            document.getElementById('spentFunds').textContent = GramSabha.formatCurrency(budget.totalSpent);
-            document.getElementById('availableFunds').textContent = GramSabha.formatCurrency(budget.available);
-            
-            // Populate issues
-            populateIssues();
-            
-            // User profile dropdown
+
+            document.getElementById('userName').textContent = user.name || '—';
+            document.getElementById('userRole').textContent = user.roleName || 'Villager';
+            document.getElementById('userAvatar').textContent = (user.avatar || (user.name || '').split(' ').map(function(n) { return n[0]; }).join('').slice(0, 2).toUpperCase()) || '—';
+            document.getElementById('welcomeMsg').textContent = GramSabha.getGreeting() + ', ' + (user.name || '').split(' ')[0] + '! 👋';
+
+            const villageId = user.villageId || user.village_id;
+            if (villageId) {
+                try {
+                    const village = await GramSabha.getVillage(villageId);
+                    document.getElementById('villageName').textContent = (village && (village.nameHindi || village.name)) ? (village.nameHindi || village.name) + ' गांव' : '—';
+                } catch (e) {
+                    document.getElementById('villageName').textContent = '—';
+                }
+                try {
+                    const budget = await GramSabha.getBudget(villageId);
+                    document.getElementById('totalFunds').textContent = GramSabha.formatCurrency(budget.totalReceived);
+                    document.getElementById('spentFunds').textContent = GramSabha.formatCurrency(budget.totalSpent);
+                    document.getElementById('availableFunds').textContent = GramSabha.formatCurrency(budget.available);
+                } catch (e) {
+                    document.getElementById('totalFunds').textContent = '—';
+                    document.getElementById('spentFunds').textContent = '—';
+                    document.getElementById('availableFunds').textContent = '—';
+                }
+            } else {
+                document.getElementById('villageName').textContent = '—';
+            }
+
+            try {
+                currentIssues = await GramSabha.getIssues(villageId, user.id);
+                populateIssues(currentIssues);
+            } catch (e) {
+                document.getElementById('issuesGrid').innerHTML = '<p class="issues-load-error">Could not load issues. Is the backend running?</p>';
+            }
+
             document.getElementById('userProfile').addEventListener('click', function() {
                 document.getElementById('dropdownMenu').classList.toggle('show');
             });
         });
-        
-        function populateIssues() {
+
+        function populateIssues(issues) {
             const issuesGrid = document.getElementById('issuesGrid');
-            const issues = GramSabha.ISSUES_DATA;
-            
-            issuesGrid.innerHTML = issues.map(issue => `
-                <div class="issue-card">
-                    <div class="issue-card-header">
-                        <span class="issue-category ${issue.category}">${issue.categoryName}</span>
-                        <span class="issue-status-badge ${issue.status}">${issue.statusName}</span>
-                    </div>
-                    <h4 class="issue-title">${issue.title}</h4>
-                    <p class="issue-desc">${issue.description}</p>
-                    <div class="issue-meta">
-                        <span><span class="material-symbols-outlined">person</span> ${issue.reportedBy}</span>
-                        <span><span class="material-symbols-outlined">calendar_today</span> ${GramSabha.formatDate(issue.reportedDate)}</span>
-                    </div>
-                    <div class="issue-footer">
-                        <button class="vote-btn ${issue.userVoted ? 'voted' : ''}" onclick="toggleVote(this, '${issue.id}')">
-                            <span class="material-symbols-outlined">${issue.userVoted ? 'thumb_up' : 'thumb_up_off_alt'}</span>
-                            <span class="vote-count">${issue.votes}</span>
-                        </button>
-                        <button class="share-btn">
-                            <span class="material-symbols-outlined">share</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+            if (!issues || !issues.length) {
+                issuesGrid.innerHTML = '<p class="no-issues">No issues to show. Raise one from Report an Issue.</p>';
+                return;
+            }
+            issuesGrid.innerHTML = issues.map(function(issue) {
+                var reportedBy = issue.reportedByName || issue.reportedBy || '—';
+                var cat = (issue.category || '').replace(/\s+/g, '-');
+                var statusClass = (issue.status || '').replace(/\s+/g, '-');
+                return '<div class="issue-card">' +
+                    '<div class="issue-card-header">' +
+                    '<span class="issue-category ' + cat + '">' + (issue.categoryName || issue.category || '—') + '</span>' +
+                    '<span class="issue-status-badge ' + statusClass + '">' + (issue.statusName || issue.status || '—') + '</span>' +
+                    '</div>' +
+                    '<h4 class="issue-title">' + (issue.title || '—') + '</h4>' +
+                    '<p class="issue-desc">' + (issue.description || '') + '</p>' +
+                    '<div class="issue-meta">' +
+                    '<span><span class="material-symbols-outlined">person</span> ' + reportedBy + '</span>' +
+                    '<span><span class="material-symbols-outlined">calendar_today</span> ' + GramSabha.formatDate(issue.reportedDate || issue.createdAt) + '</span>' +
+                    '</div>' +
+                    '<div class="issue-footer">' +
+                    '<button class="vote-btn ' + (issue.userVoted ? 'voted' : '') + '" data-issue-id="' + (issue.id || '') + '" onclick="toggleVote(this)">' +
+                    '<span class="material-symbols-outlined">' + (issue.userVoted ? 'thumb_up' : 'thumb_up_off_alt') + '</span>' +
+                    '<span class="vote-count">' + (issue.votes || 0) + '</span>' +
+                    '</button>' +
+                    '<button class="share-btn"><span class="material-symbols-outlined">share</span></button>' +
+                    '</div></div>';
+            }).join('');
         }
-        
-        function toggleVote(btn, issueId) {
-            const issue = GramSabha.ISSUES_DATA.find(i => i.id === issueId);
-            if (issue) {
-                issue.userVoted = !issue.userVoted;
-                issue.votes += issue.userVoted ? 1 : -1;
-                
-                btn.classList.toggle('voted');
-                btn.querySelector('.material-symbols-outlined').textContent = issue.userVoted ? 'thumb_up' : 'thumb_up_off_alt';
-                btn.querySelector('.vote-count').textContent = issue.votes;
-                
-                GramSabha.showNotification(issue.userVoted ? 'Vote recorded! 👍' : 'Vote removed', 'success');
+
+        async function toggleVote(btn) {
+            var issueId = btn.getAttribute('data-issue-id');
+            var user = GramSabha.getCurrentUser();
+            if (!user || !user.id) { GramSabha.showNotification('Please log in again.', 'error'); return; }
+            try {
+                var res = await GramSabha.voteIssue(issueId, user.id);
+                var countEl = btn.querySelector('.vote-count');
+                var iconEl = btn.querySelector('.material-symbols-outlined');
+                if (res.voted) {
+                    btn.classList.add('voted');
+                    iconEl.textContent = 'thumb_up';
+                    countEl.textContent = parseInt(countEl.textContent, 10) + 1;
+                    GramSabha.showNotification('Vote recorded! 👍', 'success');
+                } else {
+                    btn.classList.remove('voted');
+                    iconEl.textContent = 'thumb_up_off_alt';
+                    countEl.textContent = Math.max(0, parseInt(countEl.textContent, 10) - 1);
+                    GramSabha.showNotification('Vote removed', 'info');
+                }
+            } catch (e) {
+                GramSabha.showNotification(e.message || 'Vote failed', 'error');
             }
         }
-        
+
         function recordVoice() {
             GramSabha.showNotification('🎤 Voice recording started... Speak your issue in Hindi or English', 'info');
         }

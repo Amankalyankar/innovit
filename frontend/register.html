@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | GRAM-SABHA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .register-page { min-height: 100vh; display: flex; }
+        .login-branding {
+            width: 45%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--white); padding: 4rem; display: flex; flex-direction: column;
+        }
+        .brand-logo { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+        .brand-logo-icon { width: 56px; height: 56px; background: var(--primary); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; }
+        .brand-logo-text h1 { font-size: 1.75rem; font-weight: 900; }
+        .brand-logo-text p { font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+        .brand-content p { font-size: 1.25rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .register-form-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 4rem; background: var(--white); }
+        .register-form-container { max-width: 420px; width: 100%; margin: 0 auto; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .back-link:hover { color: var(--primary); }
+        .register-header h2 { font-size: 2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .register-header p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .form-input, .form-select { width: 100%; padding: 1rem; font-size: 1rem; border: 2px solid #e2e8f0; border-radius: var(--radius-lg); outline: none; }
+        .form-input:focus, .form-select:focus { border-color: var(--primary); }
+        .form-error { display: none; font-size: 0.75rem; color: #ef4444; margin-top: 0.5rem; }
+        .form-error.show { display: block; }
+        .submit-btn { width: 100%; padding: 1rem 1.5rem; background: var(--primary); color: var(--white); font-weight: 700; border: none; border-radius: var(--radius-lg); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1rem; }
+        .submit-btn:hover { filter: brightness(1.05); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .login-prompt { text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--text-muted); }
+        .login-prompt a { color: var(--primary); font-weight: 600; }
+        .msg-success { padding: 1rem; background: #dcfce7; border: 1px solid #86efac; border-radius: var(--radius-lg); margin-bottom: 1rem; color: #166534; font-weight: 600; display: none; }
+        .msg-success.show { display: block; }
+        @media (max-width: 1024px) { .login-branding { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="register-page">
+        <aside class="login-branding">
+            <div class="brand-logo">
+                <div class="brand-logo-icon"><span class="material-symbols-outlined">account_balance</span></div>
+                <div class="brand-logo-text"><h1>GRAM-SABHA</h1><p>Digital Village Governance</p></div>
+            </div>
+            <div class="brand-content">
+                <p>Create your account to report issues, vote on village matters, and access your dashboard.</p>
+            </div>
+        </aside>
+        <main class="register-form-panel">
+            <div class="register-form-container">
+                <a href="login.html" class="back-link">
+                    <span class="material-symbols-outlined">arrow_back</span> Back to Login
+                </a>
+                <div class="register-header">
+                    <h2>Create Account</h2>
+                    <p>Register as a villager or sarpanch to get started.</p>
+                </div>
+                <div class="msg-success" id="msgSuccess">Account created. <a href="login.html">Log in now</a>.</div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="name" placeholder="Enter your name" required>
+                        <p class="form-error" id="nameError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number (10+ digits)</label>
+                        <input type="text" class="form-input" id="mobile" placeholder="e.g. 9876543210" maxlength="12" required>
+                        <p class="form-error" id="mobileError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">PIN (min 4 characters)</label>
+                        <input type="password" class="form-input" id="pin" placeholder="Choose a PIN" minlength="4" required>
+                        <p class="form-error" id="pinError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">I am a</label>
+                        <select class="form-select" id="role">
+                            <option value="villager">Villager</option>
+                            <option value="sarpanch">Sarpanch</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="villageGroup">
+                        <label class="form-label">Village</label>
+                        <select class="form-select" id="village">
+                            <option value="">Loading villages…</option>
+                        </select>
+                        <p class="form-error" id="villageError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ward (optional)</label>
+                        <input type="text" class="form-input" id="ward" placeholder="e.g. Ward 1">
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+                </form>
+                <p class="login-prompt">Already have an account? <a href="login.html">Log in</a></p>
+            </div>
+        </main>
+    </div>
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
+    <script>
+        var API_BASE = (function() {
+            var s = document.querySelector('script[data-api-base]');
+            return (s && s.dataset.apiBase) ? s.dataset.apiBase.replace(/\/$/, '') : 'http://127.0.0.1:5000';
+        })();
+
+        document.getElementById('registerForm').onsubmit = async function(e) {
+            e.preventDefault();
+            var name = document.getElementById('name').value.trim();
+            var mobile = document.getElementById('mobile').value.trim();
+            var pin = document.getElementById('pin').value.trim();
+            var role = document.getElementById('role').value;
+            var villageId = document.getElementById('village').value;
+            var ward = document.getElementById('ward').value.trim() || null;
+
+            document.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('show'); el.textContent = ''; });
+            document.getElementById('msgSuccess').classList.remove('show');
+
+            if (!name) { document.getElementById('nameError').textContent = 'Name is required'; document.getElementById('nameError').classList.add('show'); return; }
+            if (mobile.length < 10) { document.getElementById('mobileError').textContent = 'Mobile must be at least 10 digits'; document.getElementById('mobileError').classList.add('show'); return; }
+            if (pin.length < 4) { document.getElementById('pinError').textContent = 'PIN must be at least 4 characters'; document.getElementById('pinError').classList.add('show'); return; }
+
+            var btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating…';
+            try {
+                var res = await fetch(API_BASE + '/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, mobile: mobile, pin: pin, role: role, villageId: villageId || null, ward: ward })
+                });
+                var data = await res.json().catch(function() { return {}; });
+                if (data.success) {
+                    document.getElementById('msgSuccess').classList.add('show');
+                    document.getElementById('registerForm').reset();
+                } else {
+                    document.getElementById('mobileError').textContent = data.error || 'Registration failed';
+                    document.getElementById('mobileError').classList.add('show');
+                }
+            } catch (err) {
+                document.getElementById('mobileError').textContent = 'Could not reach server. Is the backend running at ' + API_BASE + '?';
+                document.getElementById('mobileError').classList.add('show');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Create Account';
+        };
+
+        // Load villages
+        (async function() {
+            var sel = document.getElementById('village');
+            try {
+                var r = await fetch(API_BASE + '/api/villages');
+                var data = await r.json();
+                var list = (data && data.data) ? data.data : [];
+                sel.innerHTML = '<option value="">Select village (optional)</option>' + list.map(function(v) { return '<option value="' + v.id + '">' + (v.name || v.id) + '</option>'; }).join('');
+                if (!list.length) sel.innerHTML = '<option value="">No villages yet. Add one in Neon (see backend/seed_once.sql).</option>';
+            } catch (e) {
+                sel.innerHTML = '<option value="">Could not load villages</option>';
+            }
+        })();
+    </script>
+</body>
+</html>

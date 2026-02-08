@@ -465,6 +465,17 @@
         }
 
         /* Help Link */
+        .register-prompt {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .register-prompt a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         .help-section {
             margin-top: 2rem;
             text-align: center;
@@ -655,36 +666,6 @@
                     <button class="login-method-btn" data-method="aadhaar">Aadhaar ID</button>
                 </div>
 
-                <!-- Demo Credentials -->
-                <div class="demo-credentials">
-                    <h4>
-                        <span class="material-symbols-outlined">science</span>
-                        Demo Accounts (Click to auto-fill)
-                    </h4>
-                    <div class="demo-list">
-                        <div class="demo-item villager" onclick="fillDemo('9876543210', '1234', 'villager')">
-                            <div class="demo-item-left">
-                                <span class="material-symbols-outlined">person</span>
-                                <strong>Villager</strong>
-                            </div>
-                            <div class="demo-item-right">9876543210 / 1234</div>
-                        </div>
-                        <div class="demo-item sarpanch" onclick="fillDemo('9876543211', '1234', 'sarpanch')">
-                            <div class="demo-item-left">
-                                <span class="material-symbols-outlined">gavel</span>
-                                <strong>Sarpanch</strong>
-                            </div>
-                            <div class="demo-item-right">9876543211 / 1234</div>
-                        </div>
-                        <div class="demo-item admin" onclick="fillDemo('9876543212', '1234', 'admin')">
-                            <div class="demo-item-left">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
-                                <strong>Admin</strong>
-                            </div>
-                            <div class="demo-item-right">9876543212 / 1234</div>
-                    </div>
-                </div>
-
                 <!-- Role Detection -->
                 <div class="role-detection" id="roleDetection">
                     <div class="role-icon">
@@ -746,6 +727,8 @@
                     <span>Login with Fingerprint</span>
                 </button>
 
+                <p class="register-prompt">Don't have an account? <a href="register.html">Create account</a> (Villager or Sarpanch)</p>
+
                 <div class="help-section">
                     <p>Need help? Call our helpline: <a href="tel:1800-111-2222">1800-111-2222</a></p>
                 </div>
@@ -753,6 +736,6 @@
         </main>
     </div>
 
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
 </body>
 </html>

@@ -538,7 +538,7 @@
 
             <div class="village-select">
                 <span class="material-symbols-outlined">location_on</span>
-                <span>Rampur Village</span>
+                <span id="ledgerVillageName">—</span>
                 <span class="material-symbols-outlined">expand_more</span>
             </div>
         </div>
@@ -550,40 +550,38 @@
             <p>Track every rupee spent in your village. 100% transparent financial records.</p>
         </div>
 
-        <!-- Summary Cards -->
+        <!-- Summary Cards (filled from API) -->
         <div class="summary-grid">
             <div class="summary-card primary">
                 <div class="summary-label">
                     <span class="material-symbols-outlined">savings</span>
                     Total Funds Received
                 </div>
-                <div class="summary-amount">₹42,80,000</div>
-                <p class="summary-sub">FY 2024-25 • Updated 2 hours ago</p>
+                <div class="summary-amount" id="ledgerTotalReceived">—</div>
+                <p class="summary-sub" id="ledgerFiscalSub">—</p>
             </div>
-
             <div class="summary-card">
                 <div class="summary-label">
                     <span class="material-symbols-outlined">payments</span>
                     Funds Utilized
                 </div>
-                <div class="summary-amount">₹34,25,000</div>
+                <div class="summary-amount" id="ledgerSpent">—</div>
                 <div class="amount-bar">
-                    <div class="bar-spent" style="width: 65%;"></div>
-                    <div class="bar-pending" style="width: 15%;"></div>
+                    <div class="bar-spent" id="ledgerBarSpent" style="width: 0%;"></div>
+                    <div class="bar-pending" id="ledgerBarPending" style="width: 0%;"></div>
                 </div>
                 <div class="bar-legend">
-                    <span>Released (65%)</span>
-                    <span>Pending (15%)</span>
+                    <span id="ledgerReleasedLabel">Released (0%)</span>
+                    <span id="ledgerPendingLabel">Pending (0%)</span>
                 </div>
             </div>
-
             <div class="summary-card warning">
                 <div class="summary-label">
                     <span class="material-symbols-outlined">hourglass_empty</span>
                     Pending Approvals
                 </div>
-                <div class="summary-amount">₹4,55,000</div>
-                <p class="summary-sub">3 projects awaiting release</p>
+                <div class="summary-amount" id="ledgerPendingApproval">—</div>
+                <p class="summary-sub">Projects awaiting release</p>
             </div>
         </div>
 
@@ -599,156 +597,92 @@
                 </div>
             </div>
 
-            <div class="projects-list">
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-main">
-                            <h4>Ward 4 Water Pipeline Extension</h4>
-                            <p>Project ID: WTR-2024-1089 • Started: 15 Jan 2024</p>
-                        </div>
-                        <div class="project-status">
-                            <span class="status-badge in-progress">In Progress</span>
-                        </div>
-                    </div>
-                    <div class="project-funds">
-                        <div class="fund-item">
-                            <span class="fund-label">Sanctioned Amount</span>
-                            <span class="fund-amount">₹3,50,000</span>
-                        </div>
-                        <div class="fund-item">
-                            <span class="fund-label">Released So Far</span>
-                            <span class="fund-amount">₹2,45,000</span>
-                        </div>
-                        <div class="fund-item">
-                            <span class="fund-label">Spent</span>
-                            <span class="fund-amount spent">₹2,12,500</span>
-                        </div>
-                    </div>
-                    <div class="project-progress">
-                        <div class="project-progress-bar">
-                            <div class="project-progress-fill" style="width: 72%;"></div>
-                        </div>
-                        <span>72%</span>
-                    </div>
-                    <div class="project-verification">
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            <span>Photo Verified</span>
-                        </div>
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            <span>GPS Confirmed</span>
-                        </div>
-                        <div class="verify-item">
-                            <span class="material-symbols-outlined">pending</span>
-                            <span>Community Sign-off Pending</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-main">
-                            <h4>Primary School Boundary Wall</h4>
-                            <p>Project ID: EDU-2024-0892 • Completed: 28 Feb 2024</p>
-                        </div>
-                        <div class="project-status">
-                            <span class="status-badge verified">Verified & Closed</span>
-                        </div>
-                    </div>
-                    <div class="project-funds">
-                        <div class="fund-item">
-                            <span class="fund-label">Sanctioned Amount</span>
-                            <span class="fund-amount">₹1,85,000</span>
-                        </div>
-                        <div class="fund-item">
-                            <span class="fund-label">Released</span>
-                            <span class="fund-amount">₹1,85,000</span>
-                        </div>
-                        <div class="fund-item">
-                            <span class="fund-label">Spent</span>
-                            <span class="fund-amount">₹1,82,400</span>
-                        </div>
-                    </div>
-                    <div class="project-progress">
-                        <div class="project-progress-bar">
-                            <div class="project-progress-fill" style="width: 100%;"></div>
-                        </div>
-                        <span>100%</span>
-                    </div>
-                    <div class="project-verification">
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            <span>All Photos Verified</span>
-                        </div>
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            <span>GPS Confirmed</span>
-                        </div>
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            <span>Community Approved</span>
-                        </div>
-                        <div class="verify-item success">
-                            <span class="material-symbols-outlined">verified</span>
-                            <span>Audit Complete</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="projects-list" id="ledgerProjectsList">
+                <!-- Filled from API -->
             </div>
         </section>
 
         <!-- Activity Section -->
         <section class="activity-section">
             <h3>Recent Activity</h3>
-            <div class="activity-list">
-                <div class="activity-item">
-                    <div class="activity-icon payment">
-                        <span class="material-symbols-outlined">payments</span>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Payment Released to Contractor</h4>
-                        <p>₹85,000 released to Sharma Constructions for pipeline work</p>
-                        <div class="activity-meta">
-                            <span><strong>Today</strong>, 11:30 AM</span>
-                            <span>PFMS Ref: #PF2024-89012</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon approval">
-                        <span class="material-symbols-outlined">task_alt</span>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Sarpanch Approval Received</h4>
-                        <p>Street lighting project for Ward 2 approved for fund release</p>
-                        <div class="activity-meta">
-                            <span><strong>Yesterday</strong>, 4:15 PM</span>
-                            <span>Approved by: Ramesh Kumar (Sarpanch)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon verify">
-                        <span class="material-symbols-outlined">verified</span>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Work Verification Complete</h4>
-                        <p>School boundary wall project passed all verification checks</p>
-                        <div class="activity-meta">
-                            <span><strong>2 days ago</strong></span>
-                            <span>AI + Community Verification</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="activity-list" id="ledgerActivityList">
+                <!-- Filled from API -->
             </div>
         </section>
     </main>
 
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            var fmt = typeof GramSabha !== 'undefined' && GramSabha.formatCurrency ? GramSabha.formatCurrency : function(n) { return '₹' + (n || 0).toLocaleString('en-IN'); };
+            try {
+                var villagesRes = await fetch('http://127.0.0.1:5000/api/villages').then(function(r) { return r.json(); });
+                var villages = (villagesRes && villagesRes.data) ? villagesRes.data : [];
+                var village = villages[0];
+                var villageId = village && village.id;
+                if (village) document.getElementById('ledgerVillageName').textContent = (village.name || '') + ' Village';
+            } catch (e) {}
+            try {
+                var budgetRes = await fetch('http://127.0.0.1:5000/api/budget' + (villageId ? '?village_id=' + villageId : '')).then(function(r) { return r.json(); });
+                var budget = (budgetRes && budgetRes.success && budgetRes.data) ? budgetRes.data : {};
+                var total = budget.totalReceived || 0;
+                var spent = budget.totalSpent || 0;
+                var pending = budget.pendingApproval || 0;
+                document.getElementById('ledgerTotalReceived').textContent = fmt(total);
+                document.getElementById('ledgerSpent').textContent = fmt(spent);
+                document.getElementById('ledgerPendingApproval').textContent = fmt(pending);
+                document.getElementById('ledgerFiscalSub').textContent = (budget.fiscalYear || '') + (budget.lastUpdated ? ' • Updated ' + budget.lastUpdated : '');
+                var pctReleased = total ? Math.round((spent / total) * 100) : 0;
+                var pctPending = total ? Math.round((pending / total) * 100) : 0;
+                document.getElementById('ledgerBarSpent').style.width = pctReleased + '%';
+                document.getElementById('ledgerBarPending').style.width = pctPending + '%';
+                document.getElementById('ledgerReleasedLabel').textContent = 'Released (' + pctReleased + '%)';
+                document.getElementById('ledgerPendingLabel').textContent = 'Pending (' + pctPending + '%)';
+                var projects = budget.projects || [];
+                var listEl = document.getElementById('ledgerProjectsList');
+                if (!projects.length) listEl.innerHTML = '<p>No projects to display.</p>';
+                else listEl.innerHTML = projects.map(function(p) {
+                    var prog = p.progress || 0;
+                    var startStr = p.startDate ? 'Started: ' + new Date(p.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                    var endStr = p.completedDate ? 'Completed: ' + new Date(p.completedDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : (p.deadline ? 'Deadline: ' + new Date(p.deadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
+                    var verHtml = [
+                        p.verificationsPhotos ? '<div class="verify-item success"><span class="material-symbols-outlined">check_circle</span><span>Photo Verified</span></div>' : '<div class="verify-item"><span class="material-symbols-outlined">pending</span><span>Photo Pending</span></div>',
+                        p.verificationsGps ? '<div class="verify-item success"><span class="material-symbols-outlined">check_circle</span><span>GPS Confirmed</span></div>' : '<div class="verify-item"><span class="material-symbols-outlined">pending</span><span>GPS Pending</span></div>',
+                        p.verificationsCommunity ? '<div class="verify-item success"><span class="material-symbols-outlined">check_circle</span><span>Community Approved</span></div>' : '<div class="verify-item"><span class="material-symbols-outlined">pending</span><span>Community Pending</span></div>',
+                        p.verificationsAudit ? '<div class="verify-item success"><span class="material-symbols-outlined">verified</span><span>Audit Complete</span></div>' : ''
+                    ].join('');
+                    return '<div class="project-card">' +
+                        '<div class="project-header"><div class="project-main"><h4>' + (p.name || '—') + '</h4><p>' + (p.externalId || '') + ' • ' + startStr + (endStr ? ' ' + endStr : '') + '</p></div>' +
+                        '<div class="project-status"><span class="status-badge ' + (p.status || '').replace(/\s+/g, '-') + '">' + (p.status || '—') + '</span></div></div>' +
+                        '<div class="project-funds">' +
+                        '<div class="fund-item"><span class="fund-label">Sanctioned</span><span class="fund-amount">' + fmt(p.sanctioned) + '</span></div>' +
+                        '<div class="fund-item"><span class="fund-label">Released</span><span class="fund-amount">' + fmt(p.released) + '</span></div>' +
+                        '<div class="fund-item"><span class="fund-label">Spent</span><span class="fund-amount spent">' + fmt(p.spent) + '</span></div>' +
+                        '</div>' +
+                        '<div class="project-progress"><div class="project-progress-bar"><div class="project-progress-fill" style="width:' + prog + '%"></div></div><span>' + prog + '%</span></div>' +
+                        '<div class="project-verification">' + verHtml + '</div></div>';
+                }).join('');
+            } catch (e) {
+                document.getElementById('ledgerTotalReceived').textContent = '—';
+                document.getElementById('ledgerProjectsList').innerHTML = '<p>Could not load budget. Is the backend running?</p>';
+            }
+            try {
+                var actRes = await fetch('http://127.0.0.1:5000/api/activities' + (villageId ? '?village_id=' + villageId : '')).then(function(r) { return r.json(); });
+                var activities = (actRes && actRes.success && actRes.data) ? actRes.data : [];
+                var actEl = document.getElementById('ledgerActivityList');
+                if (!activities.length) actEl.innerHTML = '<p>No recent activity.</p>';
+                else actEl.innerHTML = activities.map(function(a) {
+                    var icon = (a.icon || 'info');
+                    var cls = (a.type === 'payment' ? 'payment' : a.type === 'approval' ? 'approval' : 'verify');
+                    return '<div class="activity-item"><div class="activity-icon ' + cls + '"><span class="material-symbols-outlined">' + icon + '</span></div>' +
+                        '<div class="activity-content"><h4>' + (a.title || '—') + '</h4><p>' + (a.description || '') + '</p>' +
+                        (a.reference ? '<div class="activity-meta"><span>' + (a.createdAt || '') + '</span><span>' + a.reference + '</span></div>' : '') + '</div></div>';
+                }).join('');
+            } catch (e) {
+                document.getElementById('ledgerActivityList').innerHTML = '<p>No recent activity.</p>';
+            }
+        });
+    </script>
 </body>
 </html>
