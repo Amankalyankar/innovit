@@ -811,3 +811,62 @@ mindmap
 - [ ] **Gamification** - Reward active community members
 
 ---
+
+## 🚀 Deployment (Render backend + Netlify frontend)
+
+This repository contains a static frontend (`frontend/`) and a Flask backend (`backend/`). The recommended split deployment is:
+
+- Frontend: Netlify (static site) — publish `frontend/` directory
+- Backend: Render (Web Service using the provided `Dockerfile`)
+
+Quick steps
+
+1. Create a GitHub repo and push this project.
+
+2. Frontend → Netlify
+  - In Netlify, create a new site from Git.
+  - Connect your GitHub repo and select the branch (e.g., `main`).
+  - Set the **Publish directory** to `frontend` (this repo includes `netlify.toml`).
+  - Deploy. Netlify will serve the static HTML/CSS/JS.
+
+3. Backend → Render (Docker)
+  - Create a Render account and choose **New → Web Service**.
+  - Connect your GitHub repo and pick the branch.
+  - Choose **Docker** as the environment (Render will use the `Dockerfile` at repo root).
+  - Set environment variables in the Render dashboard (see `backend/.env.example`) — at minimum:
+    - `DATABASE_URL` (your Postgres/Neon URL)
+    - `SECRET_KEY`
+    - `CORS_ORIGINS` (add your Netlify site URL, e.g. `https://your-site.netlify.app`)
+  - Set the service port to `5000` (the Dockerfile exposes 5000).
+  - Deploy; Render will build the container and run `gunicorn backend.app:app`.
+
+Environment & secrets
+
+- Don't commit real secrets. Use Render's environment variables UI to set production values.
+- Update `CORS_ORIGINS` to include your Netlify deploy URL.
+
+Local testing (quick)
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
+cd backend
+python app.py
+# Visit http://localhost:5000
+```
+
+Docker local test
+
+```powershell
+docker build -t innovit-app .
+docker run -p 5000:5000 -e DATABASE_URL="your_local_db_url" -e SECRET_KEY="dev" innovit-app
+# Visit http://localhost:5000
+```
+
+Need me to:
+
+- Generate CI (GitHub Actions) to auto-deploy to Render/Netlify on push
+- Create a `Procfile` and Render web-service instructions for non-Docker deployment
+- Or deploy this for you if you give me Render/Netlify repo access (or walk you through connecting accounts)
+

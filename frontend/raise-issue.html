@@ -636,11 +636,11 @@
 
                 <div class="description-section">
                     <label>Brief Description</label>
-                    <textarea rows="4" placeholder="Describe the issue in your own words. You can write in Hindi or English..."></textarea>
+                    <textarea id="issueDescription" rows="4" placeholder="Describe the issue in your own words. You can write in Hindi or English..."></textarea>
                 </div>
 
                 <div class="anonymous-toggle">
-                    <div class="toggle-switch" onclick="this.classList.toggle('active')">
+                    <div class="toggle-switch" id="anonymousToggle" onclick="this.classList.toggle('active')">
                         <div class="toggle-dot"></div>
                     </div>
                     <div class="toggle-text">
@@ -649,7 +649,7 @@
                     </div>
                 </div>
 
-                <button class="submit-btn" onclick="showNotification('Issue submitted successfully! Track ID: GS-2024-4521', 'success')">
+                <button class="submit-btn" id="submitIssueBtn">
                     <span class="material-symbols-outlined">send</span>
                     Submit Issue Report
                 </button>
@@ -657,14 +657,62 @@
         </main>
     </div>
 
+    <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
     <script>
         // Category selection
-        document.querySelectorAll('.category-option').forEach(btn => {
+        const categoryButtons = document.querySelectorAll('.category-option');
+        categoryButtons.forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.category-option').forEach(b => b.classList.remove('selected'));
+                categoryButtons.forEach(b => b.classList.remove('selected'));
                 this.classList.add('selected');
             });
+        });
+
+        // Submit issue to backend
+        document.getElementById('submitIssueBtn').addEventListener('click', async function () {
+            const user = GramSabha.requireAuth(['villager']);
+            if (!user) return;
+
+            const selected = document.querySelector('.category-option.selected span:last-child');
+            const categoryText = selected ? selected.textContent.trim().toLowerCase() : '';
+            const categoryMap = {
+                'water': 'water',
+                'roads': 'roads',
+                'electricity': 'electricity',
+                'sanitation': 'sanitation',
+                'education': 'education',
+                'other': 'other'
+            };
+            const category = categoryMap[categoryText] || 'other';
+
+            const titleInput = document.querySelector('.hero-title h1 span:last-child');
+            const title = titleInput ? titleInput.textContent.trim() || 'New Issue' : 'New Issue';
+
+            const desc = document.getElementById('issueDescription').value.trim();
+            const anonActive = document.getElementById('anonymousToggle').classList.contains('active');
+            const locationText = document.querySelector('.location-text strong')?.textContent.trim() || null;
+
+            try {
+                const res = await GramSabha.apiPost('/api/issues', {
+                    title,
+                    description: desc,
+                    category,
+                    villageId: user.villageId || user.village_id,
+                    reportedById: user.id,
+                    location: locationText,
+                    priority: 'normal',
+                    anonymous: anonActive
+                });
+                if (res.success) {
+                    GramSabha.showNotification('Issue submitted successfully!', 'success');
+                    setTimeout(() => { window.location.href = 'villager-dashboard.html'; }, 1000);
+                } else {
+                    GramSabha.showNotification(res.error || 'Issue submission failed', 'error');
+                }
+            } catch (e) {
+                GramSabha.showNotification(e.message || 'Issue submission failed. Check backend.', 'error');
+            }
         });
     </script>
 </body>

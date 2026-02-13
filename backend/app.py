@@ -225,6 +225,97 @@ def list_issues():
         return jsonify({"success": False, "error": str(e), "data": []}), 500
 
 
+@app.route("/api/issues", methods=["POST"])
+def create_issue():
+    """Create a new issue/complaint (typically by a villager)."""
+    data = request.get_json() or {}
+    title = (data.get("title") or "").strip()
+    description = (data.get("description") or "").strip()
+    category = (data.get("category") or "").strip().lower()
+    village_id = data.get("villageId") or data.get("village_id")
+    reported_by_id = data.get("reportedById") or data.get("reported_by_id")
+    location = (data.get("location") or "").strip() or None
+    priority = (data.get("priority") or "normal").strip().lower()
+    department = (data.get("department") or "").strip() or None
+
+    if not title:
+        return jsonify({"success": False, "error": "Title is required"}), 400
+    if not village_id:
+        return jsonify({"success": False, "error": "villageId is required"}), 400
+    if not reported_by_id:
+        return jsonify({"success": False, "error": "reportedById is required"}), 400
+
+    try:
+        village_id = int(village_id)
+        reported_by_id = int(reported_by_id)
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "error": "villageId and reportedById must be numeric"}), 400
+
+    category_names = {
+        "water": "Water Supply",
+        "roads": "Roads & Paths",
+        "electricity": "Electricity",
+        "sanitation": "Hygiene & Sanitation",
+        "education": "Education",
+    }
+    status = "submitted"
+    status_name = "Submitted"
+
+    from datetime import date
+    import uuid
+
+    external_id = f"ISS-{uuid.uuid4().hex[:8].upper()}"
+    reported_date = date.today()
+
+    try:
+        reporter = run_query_one("SELECT name FROM users WHERE id = %s", (reported_by_id,))
+        reported_by_name = reporter["name"] if reporter else None
+
+        run_query(
+            """
+            INSERT INTO issues (
+                external_id, title, description, category, category_name,
+                status, status_name, priority, department, village_id,
+                reported_by_id, reported_by_name, reported_date, votes, location
+            ) VALUES (%s, %s, %s, %s, %s,
+                      %s, %s, %s, %s, %s,
+                      %s, %s, %s, %s, %s)
+            """,
+            (
+                external_id,
+                title,
+                description or None,
+                category or None,
+                category_names.get(category, category.title() or None),
+                status,
+                status_name,
+                priority,
+                department,
+                village_id,
+                reported_by_id,
+                reported_by_name,
+                reported_date,
+                0,
+                location,
+            ),
+            commit=True,
+        )
+
+        new_issue = run_query_one(
+            """
+            SELECT id, external_id, title, description, category, category_name,
+                   status, status_name, priority, department, village_id,
+                   reported_by_id, reported_by_name, reported_date, votes, location, created_at
+            FROM issues
+            WHERE external_id = %s
+            """,
+            (external_id,),
+        )
+        return jsonify({"success": True, "data": to_camel(dict(new_issue))}), 201
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
 @app.route("/api/issues/<issue_id>/vote", methods=["POST"])
 def issue_vote(issue_id):
     """Toggle vote for issue. Body: { user_id }. issue_id can be numeric id or external_id."""
@@ -286,6 +377,69 @@ def get_budget():
         return jsonify({"success": True, "data": to_camel(out)})
     except Exception as e:
         return jsonify({"success": True, "data": {"totalReceived": 0, "totalSpent": 0, "pendingApproval": 0, "available": 0, "fiscalYear": "", "projects": []}})
+
+
+@app.route("/api/projects/<project_id>/approve", methods=["POST"])
+def approve_project(project_id):
+    """Approve a project / budget item (sarpanch action)."""
+    data = request.get_json() or {}
+    user_id = data.get("user_id") or data.get("userId")
+    if not user_id:
+        return jsonify({"success": False, "error": "user_id required"}), 400
+    try:
+        user_id = int(user_id)
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "error": "user_id must be numeric"}), 400
+
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT id, external_id, village_id, name, status, sanctioned FROM projects WHERE id::text = %s OR external_id = %s",
+                    (str(project_id), str(project_id)),
+                )
+                proj = cur.fetchone()
+                if not proj:
+                    return jsonify({"success": False, "error": "Project not found"}), 404
+
+                proj_id = proj["id"]
+                village_id = proj.get("village_id")
+
+                cur.execute(
+                    "UPDATE projects SET status = %s WHERE id = %s",
+                    ("approved", proj_id),
+                )
+
+                if village_id and proj.get("sanctioned") is not None:
+                    cur.execute(
+                        """
+                        UPDATE budget_summary
+                        SET pending_approval = GREATEST(0, pending_approval - COALESCE(%s,0))
+                        WHERE village_id = %s
+                        """,
+                        (proj.get("sanctioned"), village_id),
+                    )
+
+                cur.execute(
+                    """
+                    INSERT INTO activities (external_id, village_id, type, title, description, reference, icon)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        f"ACT-{proj['external_id']}",
+                        village_id,
+                        "approval",
+                        "Budget / Project Approved",
+                        f"Project '{proj['name']}' approved by user {user_id}.",
+                        f"Project: {proj['external_id']}",
+                        "task_alt",
+                    ),
+                )
+
+                conn.commit()
+        return jsonify({"success": True, "message": "Project approved"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 # ---------- Activities ----------
