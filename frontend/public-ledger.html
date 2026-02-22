@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <style>
         /* Ledger Specific Styles */
         .ledger-header {
@@ -531,6 +532,10 @@
             </a>
 
             <nav class="ledger-nav">
+                <a href="sarpanch-portal.html" style="display:inline-flex;align-items:center;gap:.375rem;padding:.375rem .875rem;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);border-radius:999px;color:#86efac;font-weight:700;font-size:.8125rem;transition:background .2s" onmouseover="this.style.background='rgba(22,163,74,.25)'" onmouseout="this.style.background='rgba(22,163,74,.15)'">
+                    <span class="material-symbols-outlined" style="font-size:1rem">arrow_back</span>
+                    Back to Dashboard
+                </a>
                 <a href="#" class="active">Budget Overview</a>
                 <a href="#">Active Projects</a>
                 <a href="#">Audit Reports</a>
@@ -613,6 +618,7 @@
 
     <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             var fmt = typeof GramSabha !== 'undefined' && GramSabha.formatCurrency ? GramSabha.formatCurrency : function(n) { return '₹' + (n || 0).toLocaleString('en-IN'); };
