@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <style>
         /* Verification Specific Styles */
         .verify-header {
@@ -471,6 +472,10 @@
         </a>
 
         <nav class="verify-nav">
+            <a href="sarpanch-portal.html" style="display:inline-flex;align-items:center;gap:.375rem;padding:.375rem .875rem;background:#f0fdf4;border:1.5px solid #86efac;border-radius:999px;color:#16a34a;font-weight:700;font-size:.8125rem;transition:background .2s" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+                <span class="material-symbols-outlined" style="font-size:1rem">arrow_back</span>
+                Back to Dashboard
+            </a>
             <a href="sarpanch-portal.html">Dashboard</a>
             <a href="#">Active Projects</a>
             <a href="#" class="active">Verified Checklist</a>
@@ -693,5 +698,35 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 </script>
     <script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // AUTH GUARD: Redirect to login if not sarpanch
+            var user = GramSabha.requireAuth(['sarpanch']);
+            if (!user) return;
+
+            // Copyright year
+            document.querySelectorAll('.copyright-year').forEach(function(el) {
+                el.textContent = new Date().getFullYear();
+            });
+            // Fix hardcoded 2024 in footer
+            var footer = document.querySelector('.footer-text');
+            if (footer) {
+                footer.textContent = '© ' + new Date().getFullYear() + ' Digital Governance Division • Ministry of Rural Development';
+            }
+        });
+
+        // Wire all "Upload Now" buttons to file picker
+        document.querySelectorAll('.upload-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.getElementById('hiddenFileInput').click();
+            });
+        });
+        document.getElementById('hiddenFileInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                GramSabha.showNotification('✅ ' + e.target.files.length + ' file(s) selected for upload. Processing...', 'success');
+            }
+        });
+    </script>
 </body>
 </html>

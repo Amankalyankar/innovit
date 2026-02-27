@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="admin-body">
@@ -19,14 +20,13 @@
                     <div class="sidebar-logo-icon">
                         <span class="material-symbols-outlined">account_balance</span>
                     </div>
-                    <div class="sidebar-logo-text">
-                        <h1>GRAM-SABHA</h1>
+                    <div class="sidebar-logo-text"><p class="sidebar-brand-name"><strong>GRAM-SABHA</strong></p>
                         <p>Sarpanch Portal</p>
                     </div>
                 </a>
             </div>
             
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Main navigation">
                 <a href="sarpanch-portal.html" class="nav-item">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span>Dashboard</span>
@@ -66,7 +66,7 @@
                         <p class="sidebar-user-name" id="sidebarUserName">Ramesh Kumar</p>
                         <p class="sidebar-user-role">Sarpanch • Rampur</p>
                     </div>
-                    <button onclick="GramSabha.logout()" class="sidebar-logout">
+                    <button onclick="GramSabha.logout()" class="sidebar-logout" aria-label="Logout">
                         <span class="material-symbols-outlined">logout</span>
                     </button>
                 </div>
@@ -76,8 +76,7 @@
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <div class="header-title">
-                    <h2>Community Issues</h2>
+                <div class="header-title"><h1 class="page-heading">Community Issues</h1>
                     <p>12 open issues reported by villagers</p>
                 </div>
                 <div class="header-actions">
@@ -116,15 +115,16 @@
                 <!-- Issues Table -->
                 <div class="issues-table-container">
                     <table class="issues-table">
+                        <caption class="visually-hidden">List of community issues reported in your village</caption>
                         <thead>
                             <tr>
-                                <th>Issue</th>
-                                <th>Category</th>
-                                <th>Location</th>
-                                <th>Votes</th>
-                                <th>Status</th>
-                                <th>Reported</th>
-                                <th>Action</th>
+                                <th scope="col">Issue</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Votes</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Reported</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody id="issuesTableBody">
@@ -138,234 +138,92 @@
 
     <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
     <script>
+        var allIssues = [];
+
         document.addEventListener('DOMContentLoaded', async function() {
             const user = GramSabha.requireAuth(['sarpanch']);
             if (!user) return;
 
             document.getElementById('sidebarUserName').textContent = user.name || '—';
             document.getElementById('sidebarAvatar').textContent = user.avatar || (user.name || '').split(' ').map(function(n) { return n[0]; }).join('').slice(0, 2).toUpperCase() || '—';
+            var roleEl = document.querySelector('.sidebar-user-role');
+            if (roleEl && user.village) roleEl.textContent = 'Sarpanch • ' + user.village;
 
             var villageId = user.villageId || user.village_id;
-            var tbody = document.getElementById('issuesTableBody');
             try {
-                var issues = await GramSabha.getIssues(villageId);
-                if (!issues || !issues.length) {
-                    tbody.innerHTML = '<tr><td colspan="6">No issues reported yet.</td></tr>';
-                } else {
-                    var catIcons = { water: '💧 Water', roads: '🛤️ Roads', electricity: '⚡ Electricity', sanitation: '🗑️ Sanitation', education: '🏫 Education' };
-                    tbody.innerHTML = issues.map(function(i) {
-                        var cat = (i.category || '').toLowerCase();
-                        var catLabel = catIcons[cat] || (i.categoryName || i.category || '—');
-                        var statusClass = (i.status || '').replace(/\s+/g, '-');
-                        var dateStr = GramSabha.formatDate(i.reportedDate || i.createdAt);
-                        return '<tr>' +
-                            '<td><div class="issue-info"><strong>' + (i.title || '—') + '</strong><span>' + (i.description || '') + '</span></div></td>' +
-                            '<td><span class="category-badge ' + cat + '">' + catLabel + '</span></td>' +
-                            '<td>' + (i.location || '—') + '</td>' +
-                            '<td><div class="votes-cell"><span class="material-symbols-outlined">thumb_up</span><span>' + (i.votes || 0) + '</span></div></td>' +
-                            '<td><span class="status-badge ' + statusClass + '">' + (i.statusName || i.status || '—') + '</span></td>' +
-                            '<td>' + dateStr + '</td>' +
-                            '<td><button class="action-btn-small" onclick="assignIssue(\'' + (i.id || '') + '\')"><span class="material-symbols-outlined">assignment_ind</span></button></td>' +
-                            '</tr>';
-                    }).join('');
-                }
+                allIssues = await GramSabha.getIssues(villageId) || [];
+                renderIssues(allIssues);
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6">Could not load issues. Is the backend running?</td></tr>';
+                document.getElementById('issuesTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">Could not load issues. Is the backend running?</td></tr>';
+            }
+
+            // Real-time search filter
+            var searchEl = document.getElementById('issueSearch') || document.querySelector('input[type="search"], input[placeholder*="Search"]');
+            if (searchEl) {
+                searchEl.addEventListener('input', applyFilters);
+            }
+            // Category filter
+            var catFilter = document.getElementById('categoryFilter') || document.querySelector('select');
+            if (catFilter) {
+                catFilter.addEventListener('change', applyFilters);
             }
         });
 
-        function assignIssue(idOrName) {
-            GramSabha.showNotification('Opening contractor assignment...', 'info');
-            setTimeout(function() { window.location.href = 'contractors.html'; }, 500);
+        function applyFilters() {
+            var searchEl = document.getElementById('issueSearch') || document.querySelector('input[type="search"], input[placeholder*="Search"]');
+            var catFilter = document.getElementById('categoryFilter') || document.querySelector('select');
+            var query = (searchEl ? searchEl.value : '').toLowerCase();
+            var cat = catFilter ? catFilter.value.toLowerCase() : '';
+            var filtered = allIssues.filter(function(i) {
+                var matchSearch = !query ||
+                    (i.title || '').toLowerCase().includes(query) ||
+                    (i.description || '').toLowerCase().includes(query) ||
+                    (i.location || '').toLowerCase().includes(query);
+                var matchCat = !cat || cat === 'all' || (i.category || '').toLowerCase() === cat;
+                return matchSearch && matchCat;
+            });
+            renderIssues(filtered);
         }
+
+        function renderIssues(issues) {
+            var tbody = document.getElementById('issuesTableBody');
+            if (!issues || !issues.length) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">No issues match your filter.</td></tr>';
+                return;
+            }
+            var catIcons = { water: '💧 Water', roads: '🛤️ Roads', electricity: '⚡ Electricity', sanitation: '🗑️ Sanitation', education: '🏫 Education' };
+            tbody.innerHTML = issues.map(function(i) {
+                var cat = (i.category || '').toLowerCase();
+                var catLabel = escapeHtml(catIcons[cat] || i.categoryName || i.category || '—');
+                var statusClass = escapeHtml((i.status || '').replace(/\s+/g, '-'));
+                var statusLabel = escapeHtml(i.statusName || i.status || '—');
+                var title = escapeHtml(i.title || '—');
+                var desc = escapeHtml(i.description || '');
+                var location = escapeHtml(i.location || '—');
+                var dateStr = escapeHtml(GramSabha.formatDate(i.reportedDate || i.createdAt));
+                var issueId = escapeHtml(String(i.id || ''));
+                return '<tr class="' + (i.priority === 'urgent' ? 'urgent-row' : '') + '">' +
+                    '<td><div class="issue-info"><strong>' + title + '</strong><span>' + desc + '</span></div></td>' +
+                    '<td><span class="category-badge ' + escapeHtml(cat) + '">' + catLabel + '</span></td>' +
+                    '<td>' + location + '</td>' +
+                    '<td><div class="votes-cell"><span class="material-symbols-outlined" aria-hidden="true">thumb_up</span><span>' + (i.votes || 0) + '</span></div></td>' +
+                    '<td><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+                    '<td>' + dateStr + '</td>' +
+                    '<td><button class="action-btn-small" onclick="assignIssue(\'' + issueId + '\')" aria-label="Assign issue to contractor"><span class="material-symbols-outlined">assignment_ind</span></button></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function assignIssue(issueId) {
+            GramSabha.showNotification('Opening contractor assignment for issue #' + issueId, 'info');
+            setTimeout(function() { window.location.href = 'contractors.html?issue=' + encodeURIComponent(issueId); }, 500);
+        }
+
         function viewIssue(name) {
-            GramSabha.showNotification('Viewing details for: ' + name, 'info');
+            GramSabha.showNotification('Viewing details for: ' + escapeHtml(name), 'info');
         }
     </script>
-    <style>
-        .search-filter {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: #f1f5f9;
-            border-radius: var(--radius-lg);
-        }
-        
-        .search-filter input {
-            border: none;
-            background: transparent;
-            outline: none;
-            font-size: 0.875rem;
-            width: 200px;
-        }
-        
-        .filter-select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius-lg);
-            font-size: 0.875rem;
-            background: var(--white);
-        }
-        
-        .issues-stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .stat-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-full);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .stat-pill.urgent { background: #fee2e2; color: #dc2626; }
-        .stat-pill.high { background: #fef3c7; color: #d97706; }
-        .stat-pill.normal { background: #e2e8f0; color: #64748b; }
-        
-        .issues-table-container {
-            background: var(--white);
-            border-radius: var(--radius-2xl);
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-        }
-        
-        .issues-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .issues-table th {
-            padding: 1rem 1.5rem;
-            text-align: left;
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            background: #f8fafc;
-        }
-        
-        .issues-table td {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #f1f5f9;
-        }
-        
-        .issues-table tr:hover {
-            background: #f8fafc;
-        }
-        
-        .issues-table tr.urgent-row {
-            background: #fef2f2;
-        }
-        
-        .issues-table tr.urgent-row:hover {
-            background: #fee2e2;
-        }
-        
-        .issue-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .issue-info strong {
-            font-weight: 700;
-        }
-        
-        .issue-info span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        .category-badge {
-            display: inline-flex;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .category-badge.water { background: #e0f2fe; }
-        .category-badge.roads { background: #fef3c7; }
-        .category-badge.electricity { background: #fef9c3; }
-        .category-badge.sanitation { background: #dcfce7; }
-        .category-badge.education { background: #f3e8ff; }
-        
-        .votes-cell {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .votes-cell .material-symbols-outlined {
-            font-size: 1rem;
-        }
-        
-        .status-badge {
-            display: inline-flex;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        
-        .status-badge.urgent { background: #fee2e2; color: #dc2626; }
-        .status-badge.high { background: #fef3c7; color: #d97706; }
-        .status-badge.normal { background: #e2e8f0; color: #64748b; }
-        .status-badge.in-progress { background: #dbeafe; color: #1e40af; }
-        
-        .action-btn-small {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-fast);
-        }
-        
-        .action-btn-small:hover {
-            background: var(--primary-dark);
-            transform: scale(1.1);
-        }
-        
-        .action-btn-small.viewing {
-            background: #2563eb;
-        }
-        
-        .sidebar-logout {
-            padding: 0.5rem;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.6);
-            transition: var(--transition-fast);
-            margin-left: auto;
-        }
-        
-        .sidebar-logout:hover {
-            background: #dc2626;
-            color: white;
-        }
-        
-        @media (max-width: 1024px) {
-            .issues-table th:nth-child(3),
-            .issues-table td:nth-child(3),
-            .issues-table th:nth-child(6),
-            .issues-table td:nth-child(6) {
-                display: none;
-            }
-        }
-    </style>
 </body>
 </html>

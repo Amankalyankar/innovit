@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="admin-body">
@@ -19,14 +20,13 @@
                     <div class="sidebar-logo-icon">
                         <span class="material-symbols-outlined">account_balance</span>
                     </div>
-                    <div class="sidebar-logo-text">
-                        <h1>GRAM-SABHA</h1>
+                    <div class="sidebar-logo-text"><p class="sidebar-brand-name"><strong>GRAM-SABHA</strong></p>
                         <p>Sarpanch Portal</p>
                     </div>
                 </a>
             </div>
             
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Main navigation">
                 <a href="sarpanch-portal.html" class="nav-item">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span>Dashboard</span>
@@ -66,7 +66,7 @@
                         <p class="sidebar-user-name" id="sidebarUserName">Ramesh Kumar</p>
                         <p class="sidebar-user-role">Sarpanch • Rampur</p>
                     </div>
-                    <button onclick="GramSabha.logout()" class="sidebar-logout">
+                    <button onclick="GramSabha.logout()" class="sidebar-logout" aria-label="Logout">
                         <span class="material-symbols-outlined">logout</span>
                     </button>
                 </div>
@@ -76,8 +76,7 @@
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <div class="header-title">
-                    <h2>Pending Approvals</h2>
+                <div class="header-title"><h1 class="page-heading">Pending Approvals</h1>
                     <p>5 items require your attention</p>
                 </div>
                 <div class="header-actions">
@@ -279,6 +278,7 @@
 
     <script src="js/auth.js" data-api-base="http://127.0.0.1:5000"></script>
     <script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const user = GramSabha.requireAuth(['sarpanch']);
@@ -330,206 +330,5 @@
             });
         });
     </script>
-    <style>
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-lg);
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            background: #f1f5f9;
-            transition: var(--transition-fast);
-        }
-        
-        .filter-btn:hover {
-            background: #e2e8f0;
-        }
-        
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .approvals-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .approval-card {
-            background: var(--white);
-            border-radius: var(--radius-2xl);
-            padding: 1.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .approval-card.urgent {
-            border-color: #fca5a5;
-            background: linear-gradient(135deg, #fef2f2 0%, white 50%);
-        }
-        
-        .approval-priority {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .priority-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        
-        .priority-badge.urgent { background: #fee2e2; color: #dc2626; }
-        .priority-badge.high { background: #fef3c7; color: #d97706; }
-        .priority-badge.normal { background: #e2e8f0; color: #64748b; }
-        
-        .approval-date {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        .approval-content {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .approval-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-xl);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .approval-icon.fund { background: #dcfce7; color: #16a34a; }
-        .approval-icon.verification { background: #dbeafe; color: #2563eb; }
-        .approval-icon.issue { background: #fef3c7; color: #d97706; }
-        
-        .approval-details {
-            flex: 1;
-        }
-        
-        .approval-type {
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        
-        .approval-details h3 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin: 0.25rem 0 0.5rem;
-        }
-        
-        .approval-details p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-        
-        .approval-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .approval-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        .approval-meta .material-symbols-outlined {
-            font-size: 1rem;
-        }
-        
-        .approval-amount {
-            text-align: right;
-            flex-shrink: 0;
-        }
-        
-        .approval-amount .label {
-            display: block;
-            font-size: 0.625rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-        
-        .approval-amount .value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        
-        .approval-amount .urgent-text {
-            color: #dc2626;
-        }
-        
-        .approval-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-            padding-top: 1rem;
-            border-top: 1px solid #f1f5f9;
-        }
-        
-        .btn-approve, .btn-reject, .btn-review, .btn-assign {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-lg);
-            font-weight: 600;
-            transition: var(--transition-fast);
-        }
-        
-        .btn-approve { background: var(--primary); color: white; }
-        .btn-approve:hover { background: var(--primary-dark); }
-        .btn-reject { background: #f1f5f9; color: var(--text-secondary); }
-        .btn-reject:hover { background: #dc2626; color: white; }
-        .btn-review { background: #2563eb; color: white; }
-        .btn-assign { background: #7c3aed; color: white; }
-        
-        .sidebar-logout {
-            padding: 0.5rem;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.6);
-            transition: var(--transition-fast);
-            margin-left: auto;
-        }
-        
-        .sidebar-logout:hover {
-            background: #dc2626;
-            color: white;
-        }
-        
-        @media (max-width: 1024px) {
-            .approval-content {
-                flex-direction: column;
-            }
-            
-            .approval-amount {
-                text-align: left;
-            }
-        }
-    </style>
 </body>
 </html>

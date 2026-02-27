@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="admin-body">
@@ -19,14 +20,13 @@
                     <div class="sidebar-logo-icon">
                         <span class="material-symbols-outlined">account_balance</span>
                     </div>
-                    <div class="sidebar-logo-text">
-                        <h1>GRAM-SABHA</h1>
+                    <div class="sidebar-logo-text"><p class="sidebar-brand-name"><strong>GRAM-SABHA</strong></p>
                         <p>Admin Console</p>
                     </div>
                 </a>
             </div>
             
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Main navigation">
                 <a href="admin-panel.html" class="nav-item">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span>Overview</span>
@@ -66,8 +66,7 @@
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <div class="header-title">
-                    <h2>System Settings</h2>
+                <div class="header-title"><h1 class="page-heading">System Settings</h1>
                     <p>Configure and manage system-wide settings</p>
                 </div>
                 <div class="header-actions">
@@ -438,6 +437,7 @@
 
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const user = GramSabha.requireAuth(['admin']);

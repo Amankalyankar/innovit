@@ -21,7 +21,7 @@
   /* Text Colors */
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-muted: #64748b;
 
   /* Status Colors */
   --success: #22c55e;
@@ -876,4 +876,31 @@ img {
 
 .portal-card:active {
   transform: scale(0.98);
+}
+
+/* ── Accessibility Utilities ── */
+
+/* Keyboard focus ring – visible only when navigating by keyboard */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Screen-reader only text */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
