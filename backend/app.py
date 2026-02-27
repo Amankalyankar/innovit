@@ -1,6 +1,6 @@
-"""
-GRAM-SABHA Flask backend with Neon PostgreSQL.
-"""
+import os
+
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -11,7 +11,26 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
 CORS(app, origins=CORS_ORIGINS, supports_credentials=True)
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+@app.route("/api/upload", methods=["POST"])
+def upload_file():
+    if "file" not in request.files:
+        return jsonify({"success": False, "message": "No file found"}), 400
 
+    file = request.files["file"]
+
+    if file.filename == "":
+        return jsonify({"success": False, "message": "Empty filename"}), 400
+
+    save_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(save_path)
+
+    return jsonify({
+        "success": True,
+        "message": "File uploaded successfully",
+        "path": save_path
+    })
 def to_camel(d):
     """Convert dict keys from snake_case to camelCase for frontend. Leaves keys without underscore unchanged (e.g. redirectUrl)."""
     if d is None:
